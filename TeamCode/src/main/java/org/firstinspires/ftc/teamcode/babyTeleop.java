@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 import android.graphics.Color;
 
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -34,7 +36,7 @@ public class babyTeleop extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            //Drive Code hi
+            //Drive Code
 
             fwdBackPower = gamepad1.left_stick_y;
             strafePower = gamepad1.left_stick_x;
@@ -45,10 +47,10 @@ public class babyTeleop extends LinearOpMode {
             lbPower = fwdBackPower - turnPower + strafePower;
             rbPower = fwdBackPower + turnPower - strafePower;
 
-            robot.leftfrontDrive.setPower(-lfPower*slowamount);
-            robot.leftbackDrive.setPower(-lbPower*slowamount);
-            robot.rightfrontDrive.setPower(-rfPower*slowamount);
-            robot.rightbackDrive.setPower(-rbPower*slowamount);
+            robot.leftfrontDrive.setPower(lfPower*slowamount);
+            robot.leftbackDrive.setPower(lbPower*slowamount);
+            robot.rightfrontDrive.setPower(rfPower*slowamount);
+            robot.rightbackDrive.setPower(rbPower*slowamount);
 
         }
     }
