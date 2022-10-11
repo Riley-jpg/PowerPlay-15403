@@ -23,12 +23,12 @@ public class babyTeleop extends LinearOpMode {
     static double lfPower;
     static double rbPower;
     static double rfPower;
-    static double slowamount = 1;
+    static double slowamount = .3;
 
 
     @Override
     public void runOpMode() {
-
+    robot.init(hardwareMap);
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
@@ -40,7 +40,7 @@ public class babyTeleop extends LinearOpMode {
 
             fwdBackPower = gamepad1.left_stick_y;
             strafePower = gamepad1.left_stick_x;
-            turnPower = -gamepad1.right_stick_x;
+            turnPower = gamepad1.right_stick_x;
 
             lfPower = fwdBackPower - turnPower - strafePower;
             rfPower = fwdBackPower + turnPower + strafePower;
@@ -51,6 +51,8 @@ public class babyTeleop extends LinearOpMode {
             robot.leftbackDrive.setPower(lbPower*slowamount);
             robot.rightfrontDrive.setPower(rfPower*slowamount);
             robot.rightbackDrive.setPower(rbPower*slowamount);
+
+
 
         }
     }
