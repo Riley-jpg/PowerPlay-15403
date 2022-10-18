@@ -1,9 +1,10 @@
-package org.firstinspires.ftc.robotcontroller.external.samples;
+package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.teamcode.babyHwMap;
 
 /**
  * This OpMode illustrates using a webcam to locate and drive towards ANY Vuforia target.
@@ -41,17 +43,30 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 
 @TeleOp(name="Drive To Target", group = "Concept")
 @Disabled
-public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode
+public class TensorFlowDriveConcept extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
     final double DESIRED_DISTANCE = 8.0; //  this is how close the camera should get to the target (inches)
-                                         //  The GAIN constants set the relationship between the measured position error,
-                                         //  and how much power is applied to the drive motors.  Drive = Error * Gain
-                                         //  Make these values smaller for smoother control.
+    //  The GAIN constants set the relationship between the measured position error,
+    //  and how much power is applied to the drive motors.  Drive = Error * Gain
+    //  Make these values smaller for smoother control.
     final double SPEED_GAIN =   0.02 ;   //  Speed Control "Gain". eg: Ramp up to 50% power at a 25 inch error.   (0.50 / 25.0)
     final double TURN_GAIN  =   0.01 ;   //  Turn Control "Gain".  eg: Ramp up to 25% power at a 25 degree error. (0.25 / 25.0)
 
     final double MM_PER_INCH = 25.40 ;   //  Metric conversion
+
+    /*babyHwMap robot = new babyHwMap();
+    private ElapsedTime runtime = new ElapsedTime();
+    static double turnPower = 0.5;
+    static double fwdBackPower = 0.5;
+    static double strafePower = 0.5;
+    static double lbPower;
+    static double lfPower;
+    static double rbPower;
+    static double rfPower;
+    static double actPower;
+    static double actPower2;
+    static double slowamount = 1;*/
 
     /*
      * IMPORTANT: You need to obtain your own license key to use Vuforia. The string below with which
@@ -72,8 +87,6 @@ public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode
     OpenGLMatrix targetPose     = null;
     String targetName           = "";
 
-    private DcMotor leftDrive   = null;
-    private DcMotor rightDrive  = null;
 
     @Override public void runOpMode()
     {
@@ -104,18 +117,6 @@ public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode
 
         // Start tracking targets in the background
         targetsPowerPlay.activate();
-
-        // Initialize the hardware variables. Note that the strings used here as parameters
-        // to 'get' must correspond to the names assigned during the robot configuration
-        // step (using the FTC Robot Controller app on the phone).
-        leftDrive  = hardwareMap.get(DcMotor.class, "left_drive");
-        rightDrive = hardwareMap.get(DcMotor.class, "right_drive");
-
-        // To drive forward, most robots need the motor on one side to be reversed, because the axles point in opposite directions.
-        // When run, this OpMode should start both motors driving forward. So adjust these two lines based on your first test drive.
-        // Note: The settings here assume direct drive on left and right wheels.  Gear Reduction or 90 Deg drives may require direction flips
-        leftDrive.setDirection(DcMotor.Direction.REVERSE);
-        rightDrive.setDirection(DcMotor.Direction.FORWARD);
 
         telemetry.addData(">", "Press Play to start");
         telemetry.update();
@@ -178,10 +179,24 @@ public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode
                 double  headingError = targetBearing;
 
                 // Use the speed and turn "gains" to calculate how we want the robot to move.
-                drive = rangeError * SPEED_GAIN;
-                turn  = headingError * TURN_GAIN ;
+                /*fwdBackPower = gamepad1.left_stick_y;
+                strafePower = gamepad1.left_stick_x;
+                turnPower = gamepad1.right_stick_x;
+                //actPower = gamepad2.left_stick_y;
+                //actPower2 = gamepad2.right_stick_y;
 
-                telemetry.addData("Auto","Drive %5.2f, Turn %5.2f", drive, turn);
+
+                lfPower = fwdBackPower - turnPower - strafePower;
+                rfPower = fwdBackPower + turnPower + strafePower;
+                lbPower = fwdBackPower - turnPower + strafePower;
+                rbPower = fwdBackPower + turnPower - strafePower;
+
+                robot.leftfrontDrive.setPower(lfPower*slowamount);
+                robot.leftbackDrive.setPower(lbPower*slowamount);
+                robot.rightfrontDrive.setPower(rfPower*slowamount);
+                robot.rightbackDrive.setPower(rbPower*slowamount);
+
+                */telemetry.addData("Auto","Drive %5.2f, Turn %5.2f", drive, turn);
             } else {
 
                 // drive using manual POV Joystick mode.
@@ -192,10 +207,12 @@ public class ConceptVuforiaDriveToTargetWebcam extends LinearOpMode
             telemetry.update();
 
             // Calculate left and right wheel powers and send to them to the motors.
-            double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
+            /*double leftPower    = Range.clip(drive + turn, -1.0, 1.0) ;
             double rightPower   = Range.clip(drive - turn, -1.0, 1.0) ;
-            leftDrive.setPower(leftPower);
-            rightDrive.setPower(rightPower);
+            robot.leftbackDrive.setPower(leftPower);
+            robot.leftfrontDrive.setPower(leftPower);
+            robot.rightbackDrive.setPower(rightPower);
+            robot.rightfrontDrive.setPower(rightPower);*/
 
             sleep(10);
         }

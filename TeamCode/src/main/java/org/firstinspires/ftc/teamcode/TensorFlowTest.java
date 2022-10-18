@@ -9,17 +9,17 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import com.qualcomm.robotcore.util.Range;
 
-/**
- * This 2022-2023 OpMode illustrates the basics of using the TensorFlow Object Detection API to
- * determine which image is being presented to the robot.
- *
- * Use Android Studio to Copy this Class, and Paste it into your team's code folder with a new name.
- * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list.
- *
- * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
- * is explained below.
- */
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+
 @TeleOp(name = "TensorFlowTest", group = "TensorFlow")
 @Disabled
 public class TensorFlowTest extends LinearOpMode {
@@ -31,6 +31,10 @@ public class TensorFlowTest extends LinearOpMode {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
+
+    final double DESIRED_DISTANCE = 8.0;
+    final double MM_PER_INCH = 25.40 ;   //  Metric conversion
+
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
 
@@ -60,8 +64,9 @@ public class TensorFlowTest extends LinearOpMode {
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
      * localization engine.
      */
-    private VuforiaLocalizer vuforia;
-
+    VuforiaLocalizer vuforia    = null;
+    OpenGLMatrix targetPose     = null;
+    String targetName           = "";
     /**
      * {@link #tfod} is the variable we will use to store our instance of the TensorFlow Object
      * Detection engine.
@@ -70,6 +75,28 @@ public class TensorFlowTest extends LinearOpMode {
 
     @Override
     public void runOpMode() {
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+
+        // Turn off Extended tracking.  Set this true if you want Vuforia to track beyond the target.
+        parameters.useExtendedTracking = false;
+
+        // Connect to the camera we are to use.  This name must match what is set up in Robot Configuration
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+        this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+        // Load the trackable objects from the Assets file, and give them meaningful names
+        VuforiaTrackables targetsPowerPlay = this.vuforia.loadTrackablesFromAsset("PowerPlay.tflite");
+        targetsPowerPlay.get(0).setName("Red Audience Wall");
+        targetsPowerPlay.get(1).setName("Red Rear Wall");
+        targetsPowerPlay.get(2).setName("Blue Audience Wall");
+        targetsPowerPlay.get(3).setName("Blue Rear Wall");
+
+        targetsPowerPlay.activate();
+
         // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
         // first.
         initVuforia();
@@ -95,6 +122,7 @@ public class TensorFlowTest extends LinearOpMode {
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
         waitForStart();
+
 
         if (opModeIsActive()) {
             while (opModeIsActive()) {
@@ -122,6 +150,45 @@ public class TensorFlowTest extends LinearOpMode {
                     }
                 }
             }
+            boolean targetFound     = false;    // Set to true when a target is detected by Vuforia
+            double  targetRange     = 0;        // Distance from camera to target in Inches
+            double  targetBearing   = 0;        // Robot Heading, relative to target.  Positive degrees means target is to the right.
+
+            for (VuforiaTrackable trackable : targetsPowerPlay)
+            {
+                if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible())
+                {
+                    targetPose = ((VuforiaTrackableDefaultListener)trackable.getListener()).getVuforiaCameraFromTarget();
+
+                    // if we have a target, process the "pose" to determine the position of the target relative to the robot.
+                    if (targetPose != null)
+                    {
+                        targetFound = true;
+                        targetName  = trackable.getName();
+                        VectorF trans = targetPose.getTranslation();
+
+                        // Extract the X & Y components of the offset of the target relative to the robot
+                        double targetX = trans.get(0) / MM_PER_INCH; // Image X axis
+                        double targetY = trans.get(2) / MM_PER_INCH; // Image Z axis
+
+                        // target range is based on distance from robot position to origin (right triangle).
+                        targetRange = Math.hypot(targetX, targetY);
+
+                        // target bearing is based on angle formed between the X axis and the target range line
+                        targetBearing = Math.toDegrees(Math.asin(targetX / targetRange));
+
+                        break;  // jump out of target tracking loop if we find a target.
+                    }
+                }
+            }
+
+            if (targetFound){
+                telemetry.addLine( "Hello World!");
+            } else{
+                telemetry.addLine("Nothing Found!");
+            }
+            telemetry.update();
+
         }
     }
 
