@@ -18,6 +18,7 @@ public class babyHwMap extends HardwareMapUtil {
     public DcMotor rightbackDrive = null;
     public DcMotor linearActuator = null;
     public DcMotor linearActuator2 = null;
+    public DcMotor slideMotor = null;
 
 
     public void init(HardwareMap ahwMap) {
@@ -26,6 +27,7 @@ public class babyHwMap extends HardwareMapUtil {
         rightfrontDrive = HardwareInitMotor ("rfD", false);
         leftbackDrive = HardwareInitMotor ("lbD", true);
         rightbackDrive = HardwareInitMotor ("rbD", false);
+        slideMotor = HardwareInitMotor("slide", true);
         //linearActuator = HardwareInitMotor("linAct1", true);
         //linearActuator2 = HardwareInitMotor("linAct2", true);
 
