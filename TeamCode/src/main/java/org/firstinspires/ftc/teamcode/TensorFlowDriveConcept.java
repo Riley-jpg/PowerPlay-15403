@@ -42,7 +42,7 @@ import org.firstinspires.ftc.teamcode.babyHwMap;
  */
 
 @TeleOp(name="Drive To Target", group = "Concept")
-@Disabled
+
 public class TensorFlowDriveConcept extends LinearOpMode
 {
     // Adjust these numbers to suit your robot.
