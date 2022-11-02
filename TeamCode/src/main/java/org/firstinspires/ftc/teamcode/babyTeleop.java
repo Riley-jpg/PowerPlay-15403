@@ -44,8 +44,8 @@ public class babyTeleop extends LinearOpMode {
             fwdBackPower = gamepad1.left_stick_y*.5;
             strafePower = gamepad1.left_stick_x*.5;
             turnPower = gamepad1.right_stick_x*.30;
-            //actPower = gamepad2.left_stick_y;
-            //actPower2 = gamepad2.right_stick_y;
+           // actPower = gamepad2.left_stick_y;
+            // actPower2 = gamepad2.right_stick_y;
 
 
             lfPower = fwdBackPower - turnPower - strafePower;
@@ -59,13 +59,23 @@ public class babyTeleop extends LinearOpMode {
             robot.rightbackDrive.setPower(rbPower*slowamount);
 
 
-           // robot.linearActuator.setPower(actPower);
-            //robot.linearActuator2.setPower(-actPower2);
+           /*robot.linearActuator.setPower(actPower);
+           robot.linearActuator2.setPower(-actPower2);
+            if (gamepad2.a){
+                robot.linearActuator.setPower(1);
+                robot.linearActuator2.setPower(-1);
+            } else if (gamepad2.b){
+                robot.linearActuator.setPower(-1);
+                robot.linearActuator2.setPower(1);
+            } else{
+                robot.linearActuator.setPower(0);
+                robot.linearActuator2.setPower(0);
+            }*/
 
             if (gamepad2.a) {
-                robot.slideMotor.setPower(-1);    //Extend
+                robot.slideMotor.setPower(1);    //Extend
             } else if (gamepad2.b) {
-                robot.slideMotor.setPower(1);     //Retract
+                robot.slideMotor.setPower(-1);     //Retract
             } else {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
         }
