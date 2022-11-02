@@ -84,7 +84,7 @@ public abstract class Auto_Util extends LinearOpMode {
     public static final int CAP = 3;
 
     //Drive motors
-    DcMotor rfmotor, rbmotor, lfmotor, lbmotor;
+    DcMotor rightfrontDrive, rightbackDrive, leftfrontDrive, leftbackDrive;
     //Utility motors
     DcMotor utilmotor1, utilmotor2, utilmotor3, utilmotor4;
     //odometry encoders
@@ -174,10 +174,10 @@ public abstract class Auto_Util extends LinearOpMode {
     }
 
     public void assignDriveBase(DcMotor rightfrontmotor, DcMotor rightbackmotor, DcMotor leftfrontmotor, DcMotor leftbackmotor) {
-        rfmotor = rightfrontmotor;
-        rbmotor = rightbackmotor;
-        lfmotor = leftfrontmotor;
-        lbmotor = leftbackmotor;
+        rightfrontDrive = rightfrontmotor;
+        rightbackDrive = rightbackmotor;
+        leftfrontDrive = leftfrontmotor;
+        leftbackDrive = leftbackmotor;
     }
 
     public void assignUtilMotors(DcMotor util1, DcMotor util2, DcMotor util3, DcMotor util4) {
@@ -188,27 +188,27 @@ public abstract class Auto_Util extends LinearOpMode {
     }
 
     private void initDriveHardwareMap(String rfName, String rbName, String lfName, String lbName) {
-        rfmotor = hardwareMap.dcMotor.get(rfName);
-        rfmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rbmotor = hardwareMap.dcMotor.get(rbName);
-        rbmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lfmotor = hardwareMap.dcMotor.get(lfName);
-        lfmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lbmotor = hardwareMap.dcMotor.get(lbName);
-        lbmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightfrontDrive = hardwareMap.dcMotor.get(rfName);
+        rightfrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightbackDrive = hardwareMap.dcMotor.get(rbName);
+        rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftfrontDrive = hardwareMap.dcMotor.get(lfName);
+        leftfrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftbackDrive = hardwareMap.dcMotor.get(lbName);
+        leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        rfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rfmotor.setDirection(DcMotor.Direction.FORWARD);
-        rfmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        rbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rbmotor.setDirection(DcMotor.Direction.FORWARD);
-        rbmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lfmotor.setDirection(DcMotor.Direction.REVERSE);
-        lfmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        lbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lbmotor.setDirection(DcMotor.Direction.REVERSE);
-        lbmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightfrontDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightfrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightbackDrive.setDirection(DcMotor.Direction.FORWARD);
+        rightbackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftfrontDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftfrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftbackDrive.setDirection(DcMotor.Direction.REVERSE);
+        leftbackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
     private void initUtilHardwareMap(String util1name, String util2name, String util3name, String util4name) {
@@ -299,60 +299,60 @@ public abstract class Auto_Util extends LinearOpMode {
             }
             resetEncoders();
             // Determine new target position, and pass to motor controller
-            leftBackTarget = (lbmotor.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
-            rightBackTarget = (rbmotor.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
-            leftFrontTarget = (lfmotor.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
-            rightFrontTarget = (rfmotor.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
+            leftBackTarget = (leftbackDrive.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
+            rightBackTarget = (rightbackDrive.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
+            leftFrontTarget = (leftfrontDrive.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
+            rightFrontTarget = (rightfrontDrive.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
             //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
             //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
-            lfmotor.setTargetPosition(leftFrontTarget);
-            lbmotor.setTargetPosition(leftBackTarget);
-            rfmotor.setTargetPosition(rightFrontTarget);
-            rbmotor.setTargetPosition(rightBackTarget);
+            leftfrontDrive.setTargetPosition(leftFrontTarget);
+            leftbackDrive.setTargetPosition(leftBackTarget);
+            rightfrontDrive.setTargetPosition(rightFrontTarget);
+            rightbackDrive.setTargetPosition(rightBackTarget);
 
 
             // Turn On RUN_TO_POSITION
-            rfmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rbmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lbmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lfmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightfrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftfrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            rbmotor.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            rfmotor.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            lfmotor.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
-            lbmotor.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            rightbackDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
+            rightfrontDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
+            leftfrontDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            leftbackDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
 
             //prints the desired position and actual position of all four motors
             //adjusts the motor powers according to the PI function
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS)
-                    && (rbmotor.isBusy()) && (rfmotor.isBusy()) && (lbmotor.isBusy()) && (lfmotor.isBusy())) {
-                telemetry.addData("Left Back Current Position", lbmotor.getCurrentPosition());
+                    && (rightbackDrive.isBusy()) && (rightfrontDrive.isBusy()) && (leftbackDrive.isBusy()) && (leftfrontDrive.isBusy())) {
+                telemetry.addData("Left Back Current Position", leftbackDrive.getCurrentPosition());
                 telemetry.addData("Left Back Desired Position", leftBackTarget);
-                telemetry.addData("Right Back Current Position", rbmotor.getCurrentPosition());
+                telemetry.addData("Right Back Current Position", rightbackDrive.getCurrentPosition());
                 telemetry.addData("Right Back Desired Position", rightBackTarget);
-                telemetry.addData("Left Front Current Position", lfmotor.getCurrentPosition());
+                telemetry.addData("Left Front Current Position", leftfrontDrive.getCurrentPosition());
                 telemetry.addData("Left Front Desired Position", leftFrontTarget);
-                telemetry.addData("Right Front Current Position", rfmotor.getCurrentPosition());
+                telemetry.addData("Right Front Current Position", rightfrontDrive.getCurrentPosition());
                 telemetry.addData("Right Front Desired Position", rightFrontTarget);
                 //telemetry.addData("rightSpeed",rightSpeed);
                 //telemetry.addData("leftSpeed",leftSpeed);
                 telemetry.addData("heading", heading(imu));
                 telemetry.update();
-                leftSpeed = (accelerate(lbmotor, leftSpeed, leftBackTarget) + accelerate(lfmotor, leftSpeed, leftFrontTarget) / 2);
-                rightSpeed = (accelerate(rbmotor, rightSpeed, rightBackTarget) + accelerate(rfmotor, rightSpeed, rightFrontTarget) / 2);
-                rbmotor.setPower((rightSpeed + PI(desiredHeading)));
-                rfmotor.setPower((rightSpeed + PI(desiredHeading)));
-                lfmotor.setPower((leftSpeed - PI(desiredHeading)));
-                lbmotor.setPower((leftSpeed - PI(desiredHeading)));
+                leftSpeed = (accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget) / 2);
+                rightSpeed = (accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget) / 2);
+                rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
+                rightfrontDrive.setPower((rightSpeed + PI(desiredHeading)));
+                leftfrontDrive.setPower((leftSpeed - PI(desiredHeading)));
+                leftbackDrive.setPower((leftSpeed - PI(desiredHeading)));
             }
 
-            lbmotor.setPower(0);
-            lfmotor.setPower(0);
-            rfmotor.setPower(0);
-            rbmotor.setPower(0);
+            rightfrontDrive.setPower(0);
+            rightbackDrive.setPower(0);
+            leftfrontDrive.setPower(0);
+            leftbackDrive.setPower(0);
             sleep(100);
         }
     }
@@ -377,30 +377,30 @@ public abstract class Auto_Util extends LinearOpMode {
             }
             resetEncoders();
             // Determine new target position, and pass to motor controller
-            leftBackTarget = (lbmotor.getCurrentPosition() - (int) (leftInches * ENCODER_COUNTS_PER_INCH));
-            rightBackTarget = (rbmotor.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
-            leftFrontTarget = (lfmotor.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
-            rightFrontTarget = (rfmotor.getCurrentPosition() - (int) (rightInches * ENCODER_COUNTS_PER_INCH));
+            leftBackTarget = (leftbackDrive.getCurrentPosition() - (int) (leftInches * ENCODER_COUNTS_PER_INCH));
+            rightBackTarget = (rightbackDrive.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
+            leftFrontTarget = (leftfrontDrive.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
+            rightFrontTarget = (rightfrontDrive.getCurrentPosition() - (int) (rightInches * ENCODER_COUNTS_PER_INCH));
             //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
             //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
-            lfmotor.setTargetPosition(leftFrontTarget);
-            lbmotor.setTargetPosition(leftBackTarget);
-            rfmotor.setTargetPosition(rightFrontTarget);
-            rbmotor.setTargetPosition(rightBackTarget);
+            leftfrontDrive.setTargetPosition(leftFrontTarget);
+            leftbackDrive.setTargetPosition(leftBackTarget);
+            rightfrontDrive.setTargetPosition(rightFrontTarget);
+            rightbackDrive.setTargetPosition(rightBackTarget);
 
 
             // Turn On RUN_TO_POSITION
-            rfmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            rbmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lbmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            lfmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightfrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            rightbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftbackDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            leftfrontDrive.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
             // reset the timeout time and start motion.
             runtime.reset();
-            rbmotor.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            rfmotor.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            lfmotor.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
-            lbmotor.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            rightbackDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
+            rightfrontDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
+            leftfrontDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            leftbackDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
 
 
 
@@ -408,46 +408,46 @@ public abstract class Auto_Util extends LinearOpMode {
             //adjusts the motor powers according to the PI function
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutS)
-                    && (rbmotor.isBusy()) && (rfmotor.isBusy()) && (lbmotor.isBusy()) && (lfmotor.isBusy())) {
-                telemetry.addData("Left Back Current Position", lbmotor.getCurrentPosition());
+                    && (rightbackDrive.isBusy()) && (rightfrontDrive.isBusy()) && (leftbackDrive.isBusy()) && (leftfrontDrive.isBusy())) {
+                telemetry.addData("Left Back Current Position", leftbackDrive.getCurrentPosition());
                 telemetry.addData("Left Back Desired Position", leftBackTarget);
-                telemetry.addData("Right Back Current Position", rbmotor.getCurrentPosition());
+                telemetry.addData("Right Back Current Position", rightbackDrive.getCurrentPosition());
                 telemetry.addData("Right Back Desired Position", rightBackTarget);
-                telemetry.addData("Left Front Current Position", lfmotor.getCurrentPosition());
+                telemetry.addData("Left Front Current Position", leftfrontDrive.getCurrentPosition());
                 telemetry.addData("Left Front Desired Position", leftFrontTarget);
-                telemetry.addData("Right Front Current Position", rfmotor.getCurrentPosition());
+                telemetry.addData("Right Front Current Position", rightfrontDrive.getCurrentPosition());
                 telemetry.addData("Right Front Desired Position", rightFrontTarget);
                 telemetry.addData("heading", heading(imu));
                 //telemetry.addData("Average Target",averageTarget);
                 telemetry.addData("rightSpeed", rightSpeed);
                 telemetry.addData("leftSpeed", leftSpeed);
                 telemetry.update();
-                leftSpeed = (accelerate(lbmotor, leftSpeed, leftBackTarget) + accelerate(lfmotor, leftSpeed, leftFrontTarget) / 2);
-                rightSpeed = (accelerate(rbmotor, rightSpeed, rightBackTarget) + accelerate(rfmotor, rightSpeed, rightFrontTarget) / 2);
-                rbmotor.setPower((rightSpeed + PI(desiredHeading)));
-                rfmotor.setPower((rightSpeed + PI(desiredHeading)));
-                lfmotor.setPower((leftSpeed - PI(desiredHeading)));
-                lbmotor.setPower((leftSpeed - PI(desiredHeading)));
+                leftSpeed = (accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget) / 2);
+                rightSpeed = (accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget) / 2);
+                rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
+                rightfrontDrive.setPower((rightSpeed + PI(desiredHeading)));
+                leftfrontDrive.setPower((leftSpeed - PI(desiredHeading)));
+                leftbackDrive.setPower((leftSpeed - PI(desiredHeading)));
             }
 
-            lbmotor.setPower(0);
-            lfmotor.setPower(0);
-            rfmotor.setPower(0);
-            rbmotor.setPower(0);
+            leftbackDrive.setPower(0);
+            leftfrontDrive.setPower(0);
+            rightfrontDrive.setPower(0);
+            rightbackDrive.setPower(0);
             sleep(100);
         }
     }
 
     public void resetEncoders() {
-        lfmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        lbmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rbmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        rfmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftfrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightfrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        lfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
     }
 
     /*
@@ -815,73 +815,73 @@ public abstract class Auto_Util extends LinearOpMode {
     public void setAllDriveMotors(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
-            rfmotor.setPower(1);
-            rbmotor.setPower(1);
-            lfmotor.setPower(1);
-            lbmotor.setPower(1);
+            rightfrontDrive.setPower(1);
+            rightbackDrive.setPower(1);
+            leftfrontDrive.setPower(1);
+            leftbackDrive.setPower(1);
         }
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
     }
 
     public void strafeLeft(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
-            rfmotor.setPower(1);
-            rbmotor.setPower(-1);
-            lfmotor.setPower(-1);
-            lbmotor.setPower(1);
+            rightfrontDrive.setPower(1);
+            rightbackDrive.setPower(-1);
+            leftfrontDrive.setPower(-1);
+            leftbackDrive.setPower(1);
         }
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
     }
 
     public void strafeRight(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
-            rfmotor.setPower(-1);
-            rbmotor.setPower(1);
-            lfmotor.setPower(1);
-            lbmotor.setPower(-1);
+            rightfrontDrive.setPower(-1);
+            rightbackDrive.setPower(1);
+            leftfrontDrive.setPower(1);
+            leftbackDrive.setPower(-1);
         }
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
     }
 
     public void turnRight(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
-            rfmotor.setPower(-0.5);
-            rbmotor.setPower(-0.5);
-            lfmotor.setPower(0.5);
-            lbmotor.setPower(0.5);
+            rightfrontDrive.setPower(-0.5);
+            rightbackDrive.setPower(-0.5);
+            leftfrontDrive.setPower(0.5);
+            leftbackDrive.setPower(0.5);
             telemetry.addData("seconds or somethin", runtime.seconds());
             telemetry.update();
         }
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
     }
 
     public void turnLeft(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
-            rfmotor.setPower(1);
-            rbmotor.setPower(1);
-            lfmotor.setPower(-1);
-            lbmotor.setPower(-1);
+            rightfrontDrive.setPower(1);
+            rightbackDrive.setPower(1);
+            leftfrontDrive.setPower(-1);
+            leftbackDrive.setPower(-1);
         }
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
     }
 
     /*
@@ -948,18 +948,18 @@ public abstract class Auto_Util extends LinearOpMode {
      */
 
     private void driveByPower(double power) {
-        lfmotor.setPower(power);
-        lbmotor.setPower(power);
-        rfmotor.setPower(power);
-        rbmotor.setPower(power);
+        rightfrontDrive.setPower(power);
+        rightbackDrive.setPower(power);
+        leftfrontDrive.setPower(power);
+        leftbackDrive.setPower(power);
     }
 
     public void colorAlignment() {
         boolean notOnLine = true;
-        lfmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        lbmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rfmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        rbmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightfrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftfrontDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         while(notOnLine) {
             Color.RGBToHSV(colorSensorLeft.red() * 8, colorSensorLeft.green() * 8, colorSensorLeft.blue() * 8, hsvValuesLeft);
             Color.RGBToHSV(colorSensorRight.red() * 8, colorSensorRight.green() * 8, colorSensorRight.blue() * 8, hsvValuesRight);
@@ -969,50 +969,50 @@ public abstract class Auto_Util extends LinearOpMode {
             telemetry.addLine("ValLR: " + hsvValuesLeft[2] + ", " + hsvValuesRight[2]);
 
             if (hsvValuesLeft[2] >= 80 && hsvValuesRight[2] >= 80) {
-                lfmotor.setPower(0);
-                lbmotor.setPower(0);
-                rfmotor.setPower(0);
-                rbmotor.setPower(0);
+                rightfrontDrive.setPower(0);
+                rightbackDrive.setPower(0);
+                leftfrontDrive.setPower(0);
+                leftbackDrive.setPower(0);
                 telemetry.addLine("Yay on the line");
                 telemetry.update();
                 notOnLine = false;
             }
             else if (hsvValuesLeft[2] >= 80) {
                 telemetry.addLine("White line on LEFT Side");
-                lfmotor.setPower(0);
-                lbmotor.setPower(0);
-                rfmotor.setPower(.3);
-                rbmotor.setPower(.3);
+                leftfrontDrive.setPower(0);
+                leftbackDrive.setPower(0);
+                rightfrontDrive.setPower(.3);
+                rightbackDrive.setPower(.3);
             }
             else if (hsvValuesRight[2] >= 80) {
                 telemetry.addLine("White line on RIGHT Side");
-                lfmotor.setPower(.3);
-                lbmotor.setPower(.3);
-                rfmotor.setPower(0);
-                rbmotor.setPower(0);
+                leftfrontDrive.setPower(.3);
+                leftbackDrive.setPower(.3);
+                rightfrontDrive.setPower(0);
+                rightbackDrive.setPower(0);
             }
             else {
                 telemetry.addLine("No White line detected");
-                lfmotor.setPower(-.2);
-                lbmotor.setPower(-.2);
-                rfmotor.setPower(-.2);
-                rbmotor.setPower(-.2);
+                leftfrontDrive.setPower(-.2);
+                leftbackDrive.setPower(-.2);
+                rightfrontDrive.setPower(-.2);
+                rightbackDrive.setPower(-.2);
             }
         }
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
-        rfmotor.setPower(.2);
-        rbmotor.setPower(.2);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
+        rightfrontDrive.setPower(.2);
+        rightbackDrive.setPower(.2);
         sleep(500);
-        lfmotor.setPower(0);
-        lbmotor.setPower(0);
-        rfmotor.setPower(0);
-        rbmotor.setPower(0);
+        leftfrontDrive.setPower(0);
+        leftbackDrive.setPower(0);
+        rightfrontDrive.setPower(0);
+        rightbackDrive.setPower(0);
 
-        lfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        lbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rfmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        rbmotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
 

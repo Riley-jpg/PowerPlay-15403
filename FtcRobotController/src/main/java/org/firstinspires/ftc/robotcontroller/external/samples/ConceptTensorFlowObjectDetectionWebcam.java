@@ -50,7 +50,7 @@ import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
  * is explained below.
  */
 @TeleOp(name = "Concept: TensorFlow Object Detection Webcam", group = "Concept")
-@Disabled
+
 public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
 
     /*
@@ -83,7 +83,7 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
      * and paste it in to your code on the next line, between the double quotes.
      */
     private static final String VUFORIA_KEY =
-            " -- YOUR NEW VUFORIA KEY GOES HERE  --- ";
+            "ATcQ9Jb/////AAABmXGJFOKC40g7kfOPBw8DjTpDq86FQe6MiHxC08OsCToNqw+fKiT29mM/lfoeeV88sikFGdia+F+WuD6Dm/Du3Ob+nWnN7gJCIwR+tO+qWxAguajBRQ2pxo7tODCvhYzof/ltTNRdFNNvSl82rRW+OLaI4/mn512YZfs3wNA0/hjZM5tUtsSHKKNigaAnY7QhSI9o8Wig8jtIbl6uKHyNiy8WYIjdJW2tfpwJa+jRskvcm2Eck6xPg1MfBHZzMefB9jYl/Sect6savpkYvRLIsfa16/rD7YDnR5vJVt7RVw+g1axFH3iYV1DlqxNRDgRvAO1HryGCABQUyS8h5hWGOu61S0ArgAqLQoFW38R0eJpg";
 
     /**
      * {@link #vuforia} is the variable we will use to store our instance of the Vuforia
@@ -119,7 +119,6 @@ public class ConceptTensorFlowObjectDetectionWebcam extends LinearOpMode {
             // (typically 16/9).
             tfod.setZoom(1.0, 16.0/9.0);
         }
-
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
         telemetry.update();
