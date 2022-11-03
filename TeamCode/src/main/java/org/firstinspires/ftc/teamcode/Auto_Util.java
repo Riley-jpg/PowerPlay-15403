@@ -101,7 +101,7 @@ public abstract class Auto_Util extends LinearOpMode {
     String servo1name = "wobbleS", crservo1name = "pastaS", crservo2name = "pastaS2";
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
-    private static final String TFOD_MODEL_ASSET = "UltimateGoal.tflite";
+    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
     private static int stackSize;
