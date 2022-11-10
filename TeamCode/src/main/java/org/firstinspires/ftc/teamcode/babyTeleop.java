@@ -73,11 +73,19 @@ public class babyTeleop extends LinearOpMode {
             }*/
 
             if (gamepad2.a) {
-                robot.slideMotor.setPower(1);    //Extend
+                robot.slideMotor.setPower(1);   //Extend
+                robot.slideMotor2.setPower(-1);
             } else if (gamepad2.b) {
                 robot.slideMotor.setPower(-1);     //Retract
+                robot.slideMotor2.setPower(1);
             } else {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
+                robot.slideMotor2.setPower(0);
         }
+            if(gamepad2.x){
+                robot.intakeServo.setPosition(120);
+            } else if (gamepad2.y){
+                robot.intakeServo.setPosition(0);
+            }
     }
 }}
