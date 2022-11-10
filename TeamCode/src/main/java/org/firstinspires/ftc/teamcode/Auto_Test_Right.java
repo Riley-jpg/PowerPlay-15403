@@ -7,7 +7,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 /*
 Basic Drive Test Right Side of Field for Autonomous
  */
-@Autonomous(name="TestAutonomousWithoutVuforia",group="Right")
+@Autonomous(name="TestAutonomousWithoutVuforiaRight",group="Right")
 public class Auto_Test_Right extends Auto_Util {
     public void runOpMode() throws InterruptedException {
         initAuto();
