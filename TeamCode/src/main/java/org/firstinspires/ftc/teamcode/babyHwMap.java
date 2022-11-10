@@ -20,7 +20,7 @@ public class babyHwMap extends HardwareMapUtil {
     public DcMotor linearActuator2 = null;
     public DcMotor slideMotor = null;
     public DcMotor slideMotor2= null;
-    public Servo intakeServo = null;
+    public CRServo intakeServo = null;
 
 
     public void init(HardwareMap ahwMap) {
@@ -31,9 +31,7 @@ public class babyHwMap extends HardwareMapUtil {
         rightbackDrive = HardwareInitMotor ("rbD", false);
         slideMotor = HardwareInitMotor("rightSlide", true);
         slideMotor2 = HardwareInitMotor("leftSlide", true);
-
-        intakeServo = hwmap.get(Servo.class, "intake");
-        intakeServo.setPosition(0);
+        intakeServo = hwMap.get(CRServo.class, "intake");
         //linearActuator = HardwareInitMotor("linAct1", true);
         //linearActuator2 = HardwareInitMotor("linAct2", true);
 
