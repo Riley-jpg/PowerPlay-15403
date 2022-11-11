@@ -53,6 +53,15 @@ public class babyTeleop extends LinearOpMode {
             lbPower = fwdBackPower - turnPower + strafePower;
             rbPower = fwdBackPower + turnPower - strafePower; 
 
+            if (gamepad1.a == true){
+                lfPower = lfPower*.1;
+                lbPower = lbPower*.1;
+                rfPower = rfPower*.1;
+                rbPower = rbPower*.1;
+            } else{
+                break;
+            }
+
             robot.leftfrontDrive.setPower(lfPower*slowamount);
             robot.leftbackDrive.setPower(lbPower*slowamount);
             robot.rightfrontDrive.setPower(rfPower*slowamount);
