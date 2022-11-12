@@ -31,6 +31,8 @@ public class babyHwMap extends HardwareMapUtil {
         rightbackDrive = HardwareInitMotor ("rbD", false);
         slideMotor = HardwareInitMotor("rightSlide", true);
         slideMotor2 = HardwareInitMotor("leftSlide", true);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         intakeServo = hwMap.get(CRServo.class, "intake");
         //linearActuator = HardwareInitMotor("linAct1", true);
         //linearActuator2 = HardwareInitMotor("linAct2", true);
