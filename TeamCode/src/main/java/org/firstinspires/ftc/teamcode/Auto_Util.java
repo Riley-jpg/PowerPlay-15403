@@ -86,7 +86,7 @@ public abstract class Auto_Util extends LinearOpMode {
     //Drive motors
     DcMotor rightfrontDrive, rightbackDrive, leftfrontDrive, leftbackDrive;
     //Utility motors
-    DcMotor utilmotor1, utilmotor2, utilmotor3, utilmotor4;
+    DcMotor slideMotor, slideMotor2, utilmotor3, utilmotor4;
     //odometry encoders
     DcMotor verticalLeft, verticalRight, horizontal;
     //servos
@@ -180,9 +180,9 @@ public abstract class Auto_Util extends LinearOpMode {
         leftbackDrive = leftbackmotor;
     }
 
-    public void assignUtilMotors(DcMotor util1, DcMotor util2, DcMotor util3, DcMotor util4) {
-        utilmotor1 = util1;
-        utilmotor2 = util2;
+    public void assignUtilMotors(DcMotor slide1, DcMotor slide2, DcMotor util3, DcMotor util4) {
+        slideMotor = slide1;
+        slideMotor2 = slide2;
         utilmotor3 = util3;
         utilmotor4 = util4;
     }
@@ -211,22 +211,22 @@ public abstract class Auto_Util extends LinearOpMode {
         leftbackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    private void initUtilHardwareMap(String util1name, String util2name, String util3name, String util4name) {
-        utilmotor1 = hardwareMap.dcMotor.get(util1name);
-        utilmotor1.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        utilmotor2 = hardwareMap.dcMotor.get(util2name);
-        utilmotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    private void initUtilHardwareMap(String slide1, String slide2, String util3name, String util4name) {
+        slideMotor = hardwareMap.dcMotor.get(slide1);
+        slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor2 = hardwareMap.dcMotor.get(slide2);
+        slideMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         utilmotor3 = hardwareMap.dcMotor.get(util3name);
         utilmotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         utilmotor4 = hardwareMap.dcMotor.get(util4name);
         utilmotor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        utilmotor1.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        utilmotor1.setDirection(DcMotor.Direction.FORWARD);
-        utilmotor1.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        utilmotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        utilmotor2.setDirection(DcMotor.Direction.FORWARD);
-        utilmotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideMotor.setDirection(DcMotor.Direction.FORWARD);
+        slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        slideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        slideMotor2.setDirection(DcMotor.Direction.FORWARD);
+        slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         utilmotor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         utilmotor3.setDirection(DcMotor.Direction.FORWARD);
         utilmotor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -434,6 +434,69 @@ public abstract class Auto_Util extends LinearOpMode {
             leftfrontDrive.setPower(0);
             rightfrontDrive.setPower(0);
             rightbackDrive.setPower(0);
+            sleep(100);
+        }
+    }
+
+    public void encoderLift(double speed, double lift1Inches, double lift2Inches, double timeoutS, double desiredHeading){
+        int height1Target;
+        int height2Target;
+        //int averageTarget;
+        double lift1Speed;
+        double lift2Speed;
+        if (opModeIsActive()) {
+            if (lift1Inches < 0) {
+                lift1Speed = speed * -1;
+            } else {
+                lift1Speed = speed;
+            }
+            if (lift2Inches < 0){
+                lift2Speed = speed * -1;
+            } else {
+                lift2Speed = speed;
+            }
+            resetEncoders();
+            // Determine new target position, and pass to motor controller
+            height1Target = (slideMotor.getCurrentPosition() - (int) (lift1Inches * ENCODER_COUNTS_PER_INCH));
+            height2Target = (slideMotor2.getCurrentPosition() - (int)(lift2Inches * ENCODER_COUNTS_PER_INCH));
+            //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
+            //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
+            slideMotor.setTargetPosition(height1Target);
+            slideMotor2.setTargetPosition(height2Target);
+
+            // Turn On RUN_TO_POSITION
+            slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            slideMotor2.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+
+            // reset the timeout time and start motion.
+            runtime.reset();
+            slideMotor.setPower(0.7 * (lift1Speed + PI(desiredHeading)));
+            slideMotor2.setPower(0.7 * (lift2Speed + PI(desiredHeading)));
+
+
+
+            //prints the desired position and actual position of all four motors
+            //adjusts the motor powers according to the PI function
+            while (opModeIsActive() &&
+                    (runtime.seconds() < timeoutS)
+                    && (slideMotor.isBusy()) && (slideMotor2.isBusy())) {
+                telemetry.addData("Lift Motor 1 Current Position", slideMotor.getCurrentPosition());
+                telemetry.addData("Lift Motor 1 Desired Position", height1Target);
+                telemetry.addData("Lift Motor 2 Current Position", slideMotor2.getCurrentPosition());
+                telemetry.addData("Lift Motor 2 Desired Position", height2Target);
+                telemetry.addData("heading", heading(imu));
+                //telemetry.addData("Average Target",averageTarget);
+                telemetry.addData("Lift 1 Speed", lift1Speed);
+                telemetry.addData("Lift 2 Speed", lift2Speed);
+                telemetry.update();
+                lift1Speed = (accelerate(slideMotor, lift1Speed, height1Target));
+                lift2Speed = (accelerate(slideMotor2, lift2Speed, height2Target));
+                slideMotor.setPower((lift1Speed + PI(desiredHeading)));
+                slideMotor2.setPower((lift2Speed + PI(desiredHeading)));
+            }
+
+            slideMotor.setPower(0);
+            slideMotor2.setPower(0);
             sleep(100);
         }
     }
