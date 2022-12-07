@@ -67,6 +67,7 @@ public abstract class Auto_Util extends LinearOpMode {
     static final double ENCODER_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double DRIVE_SPEED = 0.1;
     static final double STRAFE_SPEED = 0.4;
+    static final double LIFT_SPEED = 0.7;
     static final double TARGET_SHOOTER_SPEED = 1.975;
 
     //Vision Colors

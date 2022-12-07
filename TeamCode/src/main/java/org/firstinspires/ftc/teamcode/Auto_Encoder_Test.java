@@ -11,7 +11,7 @@ public class Auto_Encoder_Test extends Auto_Util {
         waitForStart();
         encoderDrive(DRIVE_SPEED, 5,5,10,0);
         encoderStrafe(STRAFE_SPEED,5,5,10,0);
-
-
+        encoderLift(LIFT_SPEED, 5, 5, 10, 0);
+        encoderStrafe(STRAFE_SPEED, -5, -5, 10, 0 );
     }
 }
