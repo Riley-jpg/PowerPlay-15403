@@ -10,6 +10,8 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+
 @TeleOp (name= "babyTeleop", group= "Pushbot")
 
 public class babyTeleop extends LinearOpMode {
@@ -27,6 +29,7 @@ public class babyTeleop extends LinearOpMode {
     static double actPower;
     static double actPower2;
     static double slowamount = 1;
+    static double liftPower;
 
 
     @Override
@@ -44,6 +47,7 @@ public class babyTeleop extends LinearOpMode {
             fwdBackPower = gamepad1.left_stick_y*.5;
             strafePower = gamepad1.left_stick_x*.5;
             turnPower = gamepad1.right_stick_x*.30;
+            liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
 
@@ -51,7 +55,9 @@ public class babyTeleop extends LinearOpMode {
             lfPower = fwdBackPower - turnPower - strafePower;
             rfPower = fwdBackPower + turnPower + strafePower;
             lbPower = fwdBackPower - turnPower + strafePower;
-            rbPower = fwdBackPower + turnPower - strafePower; 
+            rbPower = fwdBackPower + turnPower - strafePower;
+
+
 
             if (gamepad1.a == true){
                 lfPower = lfPower*.1;
@@ -66,6 +72,18 @@ public class babyTeleop extends LinearOpMode {
             robot.leftbackDrive.setPower(lbPower*slowamount);
             robot.rightfrontDrive.setPower(rfPower*slowamount);
             robot.rightbackDrive.setPower(rbPower*slowamount);
+
+            if(gamepad1.right_bumper){
+                slowamount = 0.5;
+            } else {
+                slowamount = 1;
+            }
+
+           robot.slideMotor.setPower(-liftPower);
+           robot.slideMotor2.setPower(liftPower);
+
+
+            robot.intakeServo.setPower(gamepad2.right_stick_y);
 
 
            /*robot.linearActuator.setPower(actPower);
@@ -91,9 +109,9 @@ public class babyTeleop extends LinearOpMode {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
                 robot.slideMotor2.setPower(0);
                 }*/
-            robot.slideMotor.setPower(-gamepad2.left_stick_y);
-            robot.slideMotor2.setPower(gamepad2.left_stick_y);
 
-           robot.intakeServo.setPower(gamepad2.right_stick_y);
+           // telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
+           // telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+          //  telemetry.update();
     }
 }}
