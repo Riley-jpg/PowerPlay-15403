@@ -92,14 +92,14 @@ public abstract class Auto_Util extends LinearOpMode {
     DcMotor verticalLeft, verticalRight, horizontal;
     //servos
     Servo servo1;
-    CRServo crservo1, crservo2;
+    CRServo intakeServo, crservo2;
     ElapsedTime runtime = new ElapsedTime();
     BNO055IMU imu;
     static double motor_power;
     //Hardware Map Names for drive motors and odometry wheels. This may need to be changed between years if the config changes
     String rfName = "rfD", rbName = "rbD", lfName = "lfD", lbName = "lbD";
     String util1name = "Intake", util2name = "pastaM", util3name = "shootM", util4name = "wobbleG";
-    String servo1name = "wobbleS", crservo1name = "pastaS", crservo2name = "pastaS2";
+    String servo1name = "wobbleS", intakeServoname = "intakeServo", crservo2name = "pastaS2";
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
@@ -157,7 +157,7 @@ public abstract class Auto_Util extends LinearOpMode {
     public void initAuto() {
         initDriveHardwareMap(rfName, rbName, lfName, lbName);
         initUtilHardwareMap(util1name, util2name, util3name, util4name);
-        initServoHardwareMap(servo1name, crservo1name, crservo2name);
+        initServoHardwareMap(servo1name, intakeServoname, crservo2name);
         //IMU Stuff, sets up parameters and reports accelerations to logcat log
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -240,9 +240,9 @@ public abstract class Auto_Util extends LinearOpMode {
     private void initServoHardwareMap(String servo1name, String crservo1name, String crservo2name) {
         servo1 = hardwareMap.servo.get(servo1name);
         servo1.setPosition(0);
-        crservo1 = hardwareMap.crservo.get(crservo1name);
-        crservo1.setDirection(CRServo.Direction.FORWARD);
-        crservo1.setPower(0);
+        intakeServo = hardwareMap.crservo.get(crservo1name);
+        intakeServo.setDirection(CRServo.Direction.FORWARD);
+        intakeServo.setPower(0);
         crservo2 = hardwareMap.crservo.get(crservo2name);
         crservo2.setDirection(CRServo.Direction.FORWARD);
         crservo2.setPower(0);
