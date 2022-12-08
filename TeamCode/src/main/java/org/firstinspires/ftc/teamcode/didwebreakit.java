@@ -1,6 +1,4 @@
 package org.firstinspires.ftc.teamcode;
-import android.graphics.Color;
-
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
@@ -10,11 +8,10 @@ import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 import com.qualcomm.robotcore.util.Range;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp (name= "babyTeleop", group= "Pushbot")
-
-public class babyTeleop extends Auto_Util {
+@TeleOp(name= "didwebreakit", group= "Pushbot")
+public class didwebreakit extends Auto_Util {
 
     babyHwMap robot = new babyHwMap();
     private ElapsedTime runtime = new ElapsedTime();
@@ -31,10 +28,8 @@ public class babyTeleop extends Auto_Util {
     static double slowamount = 1;
     static double liftPower;
 
-
-    @Override
     public void runOpMode() {
-    robot.init(hardwareMap);
+        robot.init(hardwareMap);
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
@@ -48,7 +43,7 @@ public class babyTeleop extends Auto_Util {
             strafePower = gamepad1.left_stick_x*.5;
             turnPower = gamepad1.right_stick_x*.30;
             liftPower = gamepad2.left_stick_y;
-           // actPower = gamepad2.left_stick_y;
+            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
 
 
@@ -79,8 +74,8 @@ public class babyTeleop extends Auto_Util {
                 slowamount = 1;
             }
 
-           robot.slideMotor.setPower(-liftPower);
-           robot.slideMotor2.setPower(liftPower);
+            robot.slideMotor.setPower(-liftPower);
+            robot.slideMotor2.setPower(liftPower);
 
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
@@ -120,8 +115,8 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor2.setPower(0);
                 }*/
 
-           // telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
-           // telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
-          //  telemetry.update();
-    }
-}}
+            // telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
+            // telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+            //  telemetry.update();
+        }
+    }}
