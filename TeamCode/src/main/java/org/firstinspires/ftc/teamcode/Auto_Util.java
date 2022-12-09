@@ -98,7 +98,7 @@ public abstract class Auto_Util extends LinearOpMode {
     static double motor_power;
     //Hardware Map Names for drive motors and odometry wheels. This may need to be changed between years if the config changes
     String rfName = "rfD", rbName = "rbD", lfName = "lfD", lbName = "lbD";
-    String util1name = "Intake", util2name = "pastaM", util3name = "shootM", util4name = "wobbleG";
+    String util1name = "rightSlide", util2name = "leftSlide", util3name = "shootM", util4name = "wobbleG";
     String servo1name = "wobbleS", intakeServoname = "intakeServo", crservo2name = "pastaS2";
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
@@ -298,7 +298,7 @@ public abstract class Auto_Util extends LinearOpMode {
             } else {
                 rightSpeed = speed;
             }
-            resetEncoders();
+            resetMotorEncoders();
             // Determine new target position, and pass to motor controller
             leftBackTarget = (leftbackDrive.getCurrentPosition() + (int) (leftInches * ENCODER_COUNTS_PER_INCH));
             rightBackTarget = (rightbackDrive.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
@@ -376,7 +376,7 @@ public abstract class Auto_Util extends LinearOpMode {
             } else {
                 rightSpeed = speed;
             }
-            resetEncoders();
+            resetMotorEncoders();
             // Determine new target position, and pass to motor controller
             leftBackTarget = (leftbackDrive.getCurrentPosition() - (int) (leftInches * ENCODER_COUNTS_PER_INCH));
             rightBackTarget = (rightbackDrive.getCurrentPosition() + (int) (rightInches * ENCODER_COUNTS_PER_INCH));
@@ -456,7 +456,7 @@ public abstract class Auto_Util extends LinearOpMode {
             } else {
                 lift2Speed = speed;
             }
-            resetEncoders();
+            resetSlideEncoders();
             // Determine new target position, and pass to motor controller
             height1Target = (slideMotor.getCurrentPosition() - (int) (lift1Inches * ENCODER_COUNTS_PER_INCH));
             height2Target = (slideMotor2.getCurrentPosition() - (int)(lift2Inches * ENCODER_COUNTS_PER_INCH));
@@ -502,7 +502,7 @@ public abstract class Auto_Util extends LinearOpMode {
         }
     }
 
-    public void resetEncoders() {
+    public void resetMotorEncoders() {
         leftfrontDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightbackDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -512,6 +512,21 @@ public abstract class Auto_Util extends LinearOpMode {
         leftbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightbackDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         rightfrontDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    public void resetSlideEncoders() {
+        try {
+            slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            slideMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+            slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            slideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        } catch (NullPointerException npe) {
+            if (slideMotor == null) {
+                telemetry.addData("SlideMotor is null", "Fix it");
+                telemetry.update();
+            }
+        }
     }
 
     /*

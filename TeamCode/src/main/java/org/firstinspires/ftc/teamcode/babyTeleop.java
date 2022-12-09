@@ -65,7 +65,7 @@ public class babyTeleop extends Auto_Util {
                 rfPower = rfPower*.1;
                 rbPower = rbPower*.1;
             } else{
-                break;
+
             }
 
             robot.leftfrontDrive.setPower(lfPower*slowamount);
