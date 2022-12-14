@@ -95,7 +95,7 @@ public abstract class Auto_Util extends LinearOpMode {
     DcMotor verticalLeft, verticalRight, horizontal;
     //servos
    // Servo servo1;
-    //CRServo intakeServo, crservo2;
+    CRServo intakeServo, crservo2;
     ElapsedTime runtime = new ElapsedTime();
     BNO055IMU imu;
     static double motor_power;
@@ -250,7 +250,7 @@ public abstract class Auto_Util extends LinearOpMode {
     }
 
     //THIS ONE IS YEAR SPECIFIC. WE MAY HAVE MORE OR LESS SERVOS AND CONTINUOUS ROTATION SERVOS THAN THIS
-    /*private void initServoHardwareMap(String servo1name, String crservo1name, String crservo2name) {
+    private void initServoHardwareMap(String crservo1name) {
         //servo1 = hardwareMap.servo.get(servo1name);
         //servo1.setPosition(0);
         intakeServo = hardwareMap.crservo.get(crservo1name);
@@ -259,7 +259,7 @@ public abstract class Auto_Util extends LinearOpMode {
         //crservo2 = hardwareMap.crservo.get(crservo2name);
         //crservo2.setDirection(CRServo.Direction.FORWARD);
         //crservo2.setPower(0);
-    }*/
+    }
 
     /*
    ___________________________________________________________________________________________________________________________________
