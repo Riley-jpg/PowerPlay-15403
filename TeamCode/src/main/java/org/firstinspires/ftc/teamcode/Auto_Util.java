@@ -71,6 +71,7 @@ public abstract class Auto_Util extends LinearOpMode {
     static final double TARGET_SHOOTER_SPEED = 1.975;
 
     //Vision Colors
+    /*
     int maxAll = getColorInt(255, 255, 255, 255);
     int minAll = getColorInt(255, 0, 0, 0);
     int maxRed = getColorInt(255, 255, 150, 150);
@@ -79,6 +80,8 @@ public abstract class Auto_Util extends LinearOpMode {
     int minBlue = getColorInt(255, 100, 100, 100);
     int maxCap = getColorInt(255, 92, 255, 228);
     int minCap = getColorInt(255, 25, 181, 155);
+
+     */
 
     public static final int RED = 1;
     public static final int BLUE = 2;
@@ -91,17 +94,18 @@ public abstract class Auto_Util extends LinearOpMode {
     //odometry encoders
     DcMotor verticalLeft, verticalRight, horizontal;
     //servos
-    Servo servo1;
-    CRServo intakeServo, crservo2;
+   // Servo servo1;
+    //CRServo intakeServo, crservo2;
     ElapsedTime runtime = new ElapsedTime();
     BNO055IMU imu;
     static double motor_power;
     //Hardware Map Names for drive motors and odometry wheels. This may need to be changed between years if the config changes
     String rfName = "rfD", rbName = "rbD", lfName = "lfD", lbName = "lbD";
-    String util1name = "rightSlide", util2name = "leftSlide", util3name = "shootM", util4name = "wobbleG";
-    String servo1name = "wobbleS", intakeServoname = "intakeServo", crservo2name = "pastaS2";
+    String util1name = "rightSlide", util2name = "leftSlide"; //, util3name = "shootM", util4name = "wobbleG";
+   // String /*servo1name = "wobbleS",*/ intakeServoname = "intakeServo"/*, crservo2name = "pastaS2"*/;
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
+    /*
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
     private static final String LABEL_SECOND_ELEMENT = "Single";
@@ -141,6 +145,7 @@ public abstract class Auto_Util extends LinearOpMode {
     int cMinY = 1;
     int cMaxY = 480;
 
+     */
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("you shouldn't be here!", "This program isnt meant to be run, only for use with all of its methods");
@@ -156,8 +161,8 @@ public abstract class Auto_Util extends LinearOpMode {
      */
     public void initAuto() {
         initDriveHardwareMap(rfName, rbName, lfName, lbName);
-        initUtilHardwareMap(util1name, util2name, util3name, util4name);
-        initServoHardwareMap(servo1name, intakeServoname, crservo2name);
+        initUtilHardwareMap(util1name, util2name);
+        //initServoHardwareMap(servo1name, intakeServoname, crservo2name);
         //IMU Stuff, sets up parameters and reports accelerations to logcat log
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -167,11 +172,14 @@ public abstract class Auto_Util extends LinearOpMode {
         imu.initialize(parameters);
 
         //Used in Color Alignment
+        /*
         colorSensorLeft = hardwareMap.get(ColorSensor.class, "colorLeft");
         colorSensorRight = hardwareMap.get(ColorSensor.class, "colorRight");
 
         colorSensorLeft.enableLed(true);
         colorSensorRight.enableLed(true);
+
+         */
     }
 
     public void assignDriveBase(DcMotor rightfrontmotor, DcMotor rightbackmotor, DcMotor leftfrontmotor, DcMotor leftbackmotor) {
@@ -212,41 +220,46 @@ public abstract class Auto_Util extends LinearOpMode {
         leftbackDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
     }
 
-    private void initUtilHardwareMap(String slide1, String slide2, String util3name, String util4name) {
+    private void initUtilHardwareMap(String slide1, String slide2) {
         slideMotor = hardwareMap.dcMotor.get(slide1);
         slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         slideMotor2 = hardwareMap.dcMotor.get(slide2);
         slideMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        /*
         utilmotor3 = hardwareMap.dcMotor.get(util3name);
         utilmotor3.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         utilmotor4 = hardwareMap.dcMotor.get(util4name);
         utilmotor4.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
+         */
         slideMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor.setDirection(DcMotor.Direction.FORWARD);
         slideMotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         slideMotor2.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         slideMotor2.setDirection(DcMotor.Direction.FORWARD);
         slideMotor2.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        /*
         utilmotor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         utilmotor3.setDirection(DcMotor.Direction.FORWARD);
         utilmotor3.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         utilmotor4.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         utilmotor4.setDirection(DcMotor.Direction.FORWARD);
         utilmotor4.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+         */
     }
 
     //THIS ONE IS YEAR SPECIFIC. WE MAY HAVE MORE OR LESS SERVOS AND CONTINUOUS ROTATION SERVOS THAN THIS
-    private void initServoHardwareMap(String servo1name, String crservo1name, String crservo2name) {
-        servo1 = hardwareMap.servo.get(servo1name);
-        servo1.setPosition(0);
+    /*private void initServoHardwareMap(String servo1name, String crservo1name, String crservo2name) {
+        //servo1 = hardwareMap.servo.get(servo1name);
+        //servo1.setPosition(0);
         intakeServo = hardwareMap.crservo.get(crservo1name);
         intakeServo.setDirection(CRServo.Direction.FORWARD);
         intakeServo.setPower(0);
-        crservo2 = hardwareMap.crservo.get(crservo2name);
-        crservo2.setDirection(CRServo.Direction.FORWARD);
-        crservo2.setPower(0);
-    }
+        //crservo2 = hardwareMap.crservo.get(crservo2name);
+        //crservo2.setDirection(CRServo.Direction.FORWARD);
+        //crservo2.setPower(0);
+    }*/
 
     /*
    ___________________________________________________________________________________________________________________________________
@@ -536,6 +549,7 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
+    /*
     public void useTwoRegions(boolean val) {
         useTwoRegions = val;
     }
@@ -756,6 +770,7 @@ public abstract class Auto_Util extends LinearOpMode {
     private void initializeFrameQueue(int capacity) {
         /** The frame queue will automatically throw away bitmap frames if they are not processed
          * quickly by the OpMode. This avoids a buildup of frames in memory */
+    /*
         frameQueue = new EvictingBlockingQueue<Bitmap>(new ArrayBlockingQueue<Bitmap>(capacity));
         frameQueue.setEvictAction(new Consumer<Bitmap>() {
             @Override public void accept(Bitmap frame) {
@@ -781,9 +796,10 @@ public abstract class Auto_Util extends LinearOpMode {
         /** YUY2 is supported by all Webcams, per the USB Webcam standard: See "USB Device Class Definition
          * for Video Devices: Uncompressed Payload, Table 2-1". Further, often this is the *only*
          * image format supported by a camera */
-        final int imageFormat = ImageFormat.YUY2;
+        //final int imageFormat = ImageFormat.YUY2;
 
         /** Verify that the image is supported, and fetch size and desired frame rate if so */
+        /*
         CameraCharacteristics cameraCharacteristics = cameraName.getCameraCharacteristics();
         if (!contains(cameraCharacteristics.getAndroidFormats(), imageFormat)) {
             error("image format not supported");
@@ -794,19 +810,23 @@ public abstract class Auto_Util extends LinearOpMode {
 
         /** Some of the logic below runs asynchronously on other threads. Use of the synchronizer
          * here allows us to wait in this method until all that asynchrony completes before returning. */
+        /*
         final ContinuationSynchronizer<CameraCaptureSession> synchronizer = new ContinuationSynchronizer<>();
         try {
             /** Create a session in which requests to capture frames can be made */
+    /*
             camera.createCaptureSession(Continuation.create(callbackHandler, new CameraCaptureSession.StateCallbackDefault() {
                 @Override public void onConfigured(@NonNull CameraCaptureSession session) {
                     try {
                         /** The session is ready to go. Start requesting frames */
+                /*
                         final CameraCaptureRequest captureRequest = camera.createCaptureRequest(imageFormat, size, fps);
                         session.startCapture(captureRequest,
                                 new CameraCaptureSession.CaptureCallback() {
                                     @Override public void onNewFrame(@NonNull CameraCaptureSession session, @NonNull CameraCaptureRequest request, @NonNull CameraFrame cameraFrame) {
                                         /** A new frame is available. The frame data has <em>not</em> been copied for us, and we can only access it
                                          * for the duration of the callback. So we copy here manually. */
+                /*
                                         Bitmap bmp = captureRequest.createEmptyBitmap();
                                         cameraFrame.copyToBitmap(bmp);
                                         frameQueue.offer(bmp);
@@ -834,6 +854,7 @@ public abstract class Auto_Util extends LinearOpMode {
         }
 
         /** Wait for all the asynchrony to complete */
+    /*
         try {
             synchronizer.await();
         } catch (InterruptedException e) {
@@ -841,6 +862,7 @@ public abstract class Auto_Util extends LinearOpMode {
         }
 
         /** Retrieve the created session. This will be null on error. */
+    /*
         cameraCaptureSession = synchronizer.getValue();
     }
 
@@ -876,6 +898,7 @@ public abstract class Auto_Util extends LinearOpMode {
         return false;
     }
 
+    */
     /*
     ___________________________________________________________________________________________________________________________________
     -
@@ -891,6 +914,7 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
+
     public void setAllDriveMotors(double time) {
         runtime.reset();
         while (runtime.seconds() < time) {
@@ -963,6 +987,8 @@ public abstract class Auto_Util extends LinearOpMode {
         leftbackDrive.setPower(0);
     }
 
+
+
     /*
     ___________________________________________________________________________________________________________________________________
     -
@@ -970,6 +996,7 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
+    /*
     public int ub_vision() {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
@@ -1018,6 +1045,8 @@ public abstract class Auto_Util extends LinearOpMode {
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
     }
 
+     */
+
         /*
     ___________________________________________________________________________________________________________________________________
     -
@@ -1025,13 +1054,16 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
-
+/*
     private void driveByPower(double power) {
         rightfrontDrive.setPower(power);
         rightbackDrive.setPower(power);
         leftfrontDrive.setPower(power);
         leftbackDrive.setPower(power);
     }
+
+ */
+    /*
 
     public void colorAlignment() {
         boolean notOnLine = true;
@@ -1097,7 +1129,10 @@ public abstract class Auto_Util extends LinearOpMode {
 
         telemetry.update();
     }
+    */
 }
+
+
 /*
 ___________________________________________________________________________________________________________________________________
 -

@@ -9,17 +9,17 @@ public class Auto_Encoder_Test extends Auto_Util {
     public void runOpMode() throws InterruptedException {
         initAuto();
         waitForStart();
-        encoderDrive(DRIVE_SPEED, 5,5,10,0);
-        encoderStrafe(STRAFE_SPEED,5,5,10,0);
-        encoderLift(LIFT_SPEED, 5, 5, 10, 0);
-        encoderDrive(DRIVE_SPEED, .25, .25, 10, 0);
-        encoderLift(LIFT_SPEED, -0.25, -0.25, 10, 0);
-        while(runtime.seconds() < 5) {
+        encoderDrive(DRIVE_SPEED, 28,28,10,0);
+        encoderStrafe(STRAFE_SPEED,40,40,10,0);
+        encoderLift(LIFT_SPEED, 35, 35, 10, 0);
+        encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
+        encoderLift(LIFT_SPEED, -1, -1, 10, 0);
+        /*while(runtime.seconds() < 5) {
             intakeServo.setPower(-1);
         }
-        intakeServo.setPower(0);
-        encoderLift(LIFT_SPEED, -4.75, -4.75, 10, 0);
-        encoderDrive(DRIVE_SPEED, -0.25, -0.25, 10, 0);
-        encoderStrafe(STRAFE_SPEED, -5, -5, 10, 0 );
+        intakeServo.setPower(0);*/
+        encoderLift(LIFT_SPEED, -34, -34, 10, 0);
+        encoderDrive(DRIVE_SPEED, -1, -1, 10, 0);
+        encoderStrafe(STRAFE_SPEED, -39, -39, 10, 0 );
     }
 }

@@ -35,6 +35,7 @@ public class babyTeleop extends Auto_Util {
     @Override
     public void runOpMode() {
     robot.init(hardwareMap);
+        initAuto();
         telemetry.addData("Status", "Ready to run");
         telemetry.update();
 
@@ -85,14 +86,14 @@ public class babyTeleop extends Auto_Util {
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
 
-            if (gamepad2.x){
-                encoderLift(1, 13.5, 13.5, 10, 0);}
+            if (gamepad2.a){
+                encoderLift(1, 13, 13, 10, 0);}
+            if (gamepad2.b) {
+                encoderLift(1, 21, 21, 10, 0);}
             if (gamepad2.y) {
-                encoderLift(1, 23.5, 23.5, 10, 0);}
-            if (gamepad2.a) {
-                encoderLift(1, 33.5, 33.5, 10, 0);}
-            if(gamepad2.b){
-                encoderLift(1, 0, 0, 10, 0);}
+                encoderLift(1, 35, 35, 10, 0);}
+            if(gamepad2.x){
+                encoderLift(1, -35, -35, 10, 0);}
 
 
             //Unused Code Graveyard:
