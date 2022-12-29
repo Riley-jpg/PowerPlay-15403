@@ -11,14 +11,14 @@ public class Auto_Encoder_Test extends Auto_Util {
         waitForStart();
         encoderDrive(DRIVE_SPEED, 17,17,10,0);
         encoderStrafe(STRAFE_SPEED,24,24,10,0);
-        encoderLift(LIFT_SPEED, 28, 28, 10, 0);
+        encoderLift(LIFT_SPEED, 24, 24, 10, 0);
         encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
         encoderLift(LIFT_SPEED, -1, -1, 10, 0);
         while(runtime.seconds() < 5) {
             intakeServo.setPower(-1);
         }
         intakeServo.setPower(0);
-        encoderLift(LIFT_SPEED, -27, -27, 10, 0);
+        encoderLift(LIFT_SPEED, -23, -23, 10, 0);
         encoderDrive(DRIVE_SPEED, -1, -1, 10, 0);
         encoderStrafe(STRAFE_SPEED, -23, -23, 10, 0 );
     }
