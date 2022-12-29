@@ -9,7 +9,7 @@ public class Auto_Encoder_Test extends Auto_Util {
     public void runOpMode() throws InterruptedException {
         initAuto();
         waitForStart();
-        encoderDrive(DRIVE_SPEED, 17,17,10,0);
+        encoderDrive(DRIVE_SPEED, 19,19,10,0);
         encoderStrafe(STRAFE_SPEED,24,24,10,0);
         encoderLift(LIFT_SPEED, 24, 24, 10, 0);
         encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
