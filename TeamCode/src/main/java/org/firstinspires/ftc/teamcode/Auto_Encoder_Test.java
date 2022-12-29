@@ -10,7 +10,7 @@ public class Auto_Encoder_Test extends Auto_Util {
         initAuto();
         waitForStart();
         encoderDrive(DRIVE_SPEED, 17,17,10,0);
-        encoderStrafe(STRAFE_SPEED,30,30,10,0);
+        encoderStrafe(STRAFE_SPEED,24,24,10,0);
         encoderLift(LIFT_SPEED, 28, 28, 10, 0);
         encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
         encoderLift(LIFT_SPEED, -1, -1, 10, 0);
@@ -20,6 +20,6 @@ public class Auto_Encoder_Test extends Auto_Util {
         intakeServo.setPower(0);
         encoderLift(LIFT_SPEED, -27, -27, 10, 0);
         encoderDrive(DRIVE_SPEED, -1, -1, 10, 0);
-        encoderStrafe(STRAFE_SPEED, -29, -29, 10, 0 );
+        encoderStrafe(STRAFE_SPEED, -23, -23, 10, 0 );
     }
 }
