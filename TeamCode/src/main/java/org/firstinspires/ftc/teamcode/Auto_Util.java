@@ -302,12 +302,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -1;
+                leftSpeed = speed * -0.7;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -1;
+                rightSpeed = speed * -0.7;
             } else {
                 rightSpeed = speed;
             }
@@ -380,12 +380,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -1;
+                leftSpeed = speed * -0.7;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -1;
+                rightSpeed = speed * -0.7;
             } else {
                 rightSpeed = speed;
             }
