@@ -45,9 +45,9 @@ public class babyTeleop extends Auto_Util {
 
             //Drive Code
 
-            fwdBackPower = gamepad1.left_stick_y*.5;
-            strafePower = gamepad1.left_stick_x*.5;
-            turnPower = gamepad1.right_stick_x*.30;
+            fwdBackPower =- gamepad1.left_stick_y;
+            strafePower = -gamepad1.left_stick_x;
+            turnPower =- gamepad1.right_stick_x*.30;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
@@ -121,8 +121,8 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor2.setPower(0);
                 }*/
 
-           // telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
-           // telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
-          //  telemetry.update();
+           telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
+            telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+            telemetry.update();
     }
 }}
