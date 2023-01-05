@@ -126,7 +126,7 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor2.setPower(1);
             } else {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
-                robot.slideMotor2.setPower(0);
+                robot.slideMotor2.setPower(0);s
                 }*/
 
             telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
