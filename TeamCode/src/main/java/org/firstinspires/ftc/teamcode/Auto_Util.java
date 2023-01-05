@@ -452,31 +452,22 @@ public abstract class Auto_Util extends LinearOpMode {
         }
     }
 
-    public void encoderLift(double speed, double lift1Inches, double lift2Inches, double timeoutS, double desiredHeading){
-        int height1Target;
-        int height2Target;
+    public void encoderLift(double speed, double liftInches,  double timeoutS, double desiredHeading){
+        int heightTarget;
         //int averageTarget;
-        double lift1Speed;
-        double lift2Speed;
+        double liftSpeed;
         if (opModeIsActive()) {
-            if (lift1Inches < 0) {
-                lift1Speed = speed * -1;
+            if (liftInches < 0) {
+                liftSpeed = speed * -1;
             } else {
-                lift1Speed = speed;
-            }
-            if (lift2Inches < 0){
-                lift2Speed = speed * -1;
-            } else {
-                lift2Speed = speed;
+                liftSpeed = speed;
             }
             resetSlideEncoders();
             // Determine new target position, and pass to motor controller
-            height1Target = (slideMotor.getCurrentPosition() - (int) (lift1Inches * ENCODER_COUNTS_PER_INCH));
-            height2Target = (slideMotor2.getCurrentPosition() - (int)(lift2Inches * ENCODER_COUNTS_PER_INCH));
+            heightTarget = (slideMotor.getCurrentPosition() - (int) (liftInches * ENCODER_COUNTS_PER_INCH));
             //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
             //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
-            slideMotor.setTargetPosition(height1Target);
-            slideMotor2.setTargetPosition(height2Target);
+            slideMotor.setTargetPosition(heightTarget);
 
             // Turn On RUN_TO_POSITION
             slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -484,8 +475,8 @@ public abstract class Auto_Util extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            slideMotor.setPower(0.7 * (lift1Speed + PI(desiredHeading)));
-            slideMotor2.setPower(0.7 * (lift2Speed + PI(desiredHeading)));
+            slideMotor.setPower(0.7 * (liftSpeed + PI(desiredHeading)));
+            slideMotor2.setPower(0.7 * (liftSpeed + PI(desiredHeading)));
 
 
 
@@ -495,18 +486,16 @@ public abstract class Auto_Util extends LinearOpMode {
                     (runtime.seconds() < timeoutS)
                     && (slideMotor.isBusy()) && (slideMotor2.isBusy())) {
                 telemetry.addData("Lift Motor 1 Current Position", slideMotor.getCurrentPosition());
-                telemetry.addData("Lift Motor 1 Desired Position", height1Target);
+                telemetry.addData("Lift Motor 1 Desired Position", heightTarget);
                 telemetry.addData("Lift Motor 2 Current Position", slideMotor2.getCurrentPosition());
-                telemetry.addData("Lift Motor 2 Desired Position", height2Target);
+                telemetry.addData("Lift Motor 2 Desired Position", heightTarget);
                 telemetry.addData("heading", heading(imu));
                 //telemetry.addData("Average Target",averageTarget);
-                telemetry.addData("Lift 1 Speed", lift1Speed);
-                telemetry.addData("Lift 2 Speed", lift2Speed);
+                telemetry.addData("Lift 1 Speed", liftSpeed);
+                telemetry.addData("Lift 2 Speed", liftSpeed);
                 telemetry.update();
-                lift1Speed = (accelerate(slideMotor, lift1Speed, height1Target));
-                lift2Speed = (accelerate(slideMotor2, lift2Speed, height2Target));
-                slideMotor.setPower((lift1Speed + PI(desiredHeading)));
-                slideMotor2.setPower((lift2Speed + PI(desiredHeading)));
+                liftSpeed = (accelerate(slideMotor, liftSpeed, heightTarget));
+                slideMotor.setPower((liftSpeed + PI(desiredHeading)));
             }
 
             slideMotor.setPower(0);

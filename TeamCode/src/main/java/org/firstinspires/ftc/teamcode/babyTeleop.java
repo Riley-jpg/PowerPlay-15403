@@ -45,9 +45,9 @@ public class babyTeleop extends Auto_Util {
 
             //Drive Code
 
-            fwdBackPower = -gamepad1.left_stick_y*.5;
-            strafePower = -gamepad1.left_stick_x*.5;
-            turnPower = -gamepad1.right_stick_x*.30;
+            fwdBackPower = gamepad1.left_stick_y*.5;
+            strafePower = gamepad1.left_stick_x*.5;
+            turnPower = gamepad1.right_stick_x*.30;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
@@ -95,14 +95,6 @@ public class babyTeleop extends Auto_Util {
             if(gamepad2.x){
                 encoderLift(1, -35, -35, 10, 0);}
 
-            while(gamepad2.left_stick_y < 0){
-                if(robot.slideMotor.getCurrentPosition() == 0){
-                    robot.slideMotor.setPower(0);
-                    robot.slideMotor2.setPower(0);
-                }
-
-            }
-
 
             //Unused Code Graveyard:
            /*robot.linearActuator.setPower(actPower);
@@ -126,11 +118,11 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor2.setPower(1);
             } else {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
-                robot.slideMotor2.setPower(0);s
+                robot.slideMotor2.setPower(0);
                 }*/
 
-            telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
-            telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
-            telemetry.update();
+           // telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
+           // telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+          //  telemetry.update();
     }
 }}
