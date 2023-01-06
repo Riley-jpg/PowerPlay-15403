@@ -12,14 +12,14 @@ public class Auto_Encoder_Test extends Auto_Util {
         waitForStart();
         encoderDrive(DRIVE_SPEED, 16,16,10,0);
         encoderStrafe(STRAFE_SPEED,9,9,10,0); //maybe 12 for high pole
-        encoderLift(LIFT_SPEED, -4, 4, 10, 0);
+      //  encoderLift(LIFT_SPEED, -4, 4, 10, 0);
         encoderDrive(DRIVE_SPEED, 1, 1, 10, 0);
-        encoderLift(LIFT_SPEED, 1, -1, 10, 0);
+      //  encoderLift(LIFT_SPEED, 1, -1, 10, 0);
         while(runtime.seconds() < 5) {
             intakeServo.setPower(-1);
         }
         intakeServo.setPower(0);
-        encoderLift(LIFT_SPEED, 3, -3, 10, 0);
+       // encoderLift(LIFT_SPEED, 3, -3, 10, 0);
         encoderDrive(DRIVE_SPEED, -1, -1, 10, 0);
         encoderStrafe(STRAFE_SPEED, -9, -9, 10, 0 );
     }
