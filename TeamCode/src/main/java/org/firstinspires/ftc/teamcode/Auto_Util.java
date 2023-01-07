@@ -66,7 +66,7 @@ public abstract class Auto_Util extends LinearOpMode {
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double ENCODER_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double DRIVE_SPEED = 0.1;
-    static final double STRAFE_SPEED = 0.4;
+    static final double STRAFE_SPEED = 0.1;
     static final double LIFT_SPEED = 0.7;
     static final double TARGET_SHOOTER_SPEED = 1.975;
 
@@ -102,7 +102,7 @@ public abstract class Auto_Util extends LinearOpMode {
     //Hardware Map Names for drive motors and odometry wheels. This may need to be changed between years if the config changes
     String rfName = "rfD", rbName = "rbD", lfName = "lfD", lbName = "lbD";
     String util1name = "rightSlide", util2name = "leftSlide"; //, util3name = "shootM", util4name = "wobbleG";
-   // String /*servo1name = "wobbleS",*/ intakeServoname = "intakeServo"/*, crservo2name = "pastaS2"*/;
+    String /*servo1name = "wobbleS",*/ intakeServoname = "intake"/*, crservo2name = "pastaS2"*/;
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
     /*
@@ -162,7 +162,7 @@ public abstract class Auto_Util extends LinearOpMode {
     public void initAuto() {
         initDriveHardwareMap(rfName, rbName, lfName, lbName);
         initUtilHardwareMap(util1name, util2name);
-        //initServoHardwareMap(servo1name, intakeServoname, crservo2name);
+        initServoHardwareMap(intakeServoname);
         //IMU Stuff, sets up parameters and reports accelerations to logcat log
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
         parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
@@ -302,12 +302,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -0.7;
+                leftSpeed = speed * -0.1;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -0.7;
+                rightSpeed = speed * -0.1;
             } else {
                 rightSpeed = speed;
             }
@@ -333,10 +333,10 @@ public abstract class Auto_Util extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            rightbackDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            rightfrontDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            leftfrontDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
-            leftbackDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            rightbackDrive.setPower(0.1 * (rightSpeed + PI(desiredHeading)));
+            rightfrontDrive.setPower(0.1 * (rightSpeed + PI(desiredHeading)));
+            leftfrontDrive.setPower(0.1 * (leftSpeed - PI(desiredHeading)));
+            leftbackDrive.setPower(0.1 * (leftSpeed - PI(desiredHeading)));
 
             //prints the desired position and actual position of all four motors
             //adjusts the motor powers according to the PI function
@@ -380,12 +380,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -0.5;
+                leftSpeed = speed * -0.1;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -0.5;
+                rightSpeed = speed * -0.1;
             } else {
                 rightSpeed = speed;
             }
@@ -411,10 +411,10 @@ public abstract class Auto_Util extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            rightbackDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            rightfrontDrive.setPower(0.7 * (rightSpeed + PI(desiredHeading)));
-            leftfrontDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
-            leftbackDrive.setPower(0.7 * (leftSpeed - PI(desiredHeading)));
+            rightbackDrive.setPower(0.1 * (rightSpeed + PI(desiredHeading)));
+            rightfrontDrive.setPower(0.1 * (rightSpeed + PI(desiredHeading)));
+            leftfrontDrive.setPower(0.1 * (leftSpeed - PI(desiredHeading)));
+            leftbackDrive.setPower(0.1 * (leftSpeed - PI(desiredHeading)));
 
 
 
@@ -974,6 +974,27 @@ public abstract class Auto_Util extends LinearOpMode {
         rightbackDrive.setPower(0);
         leftfrontDrive.setPower(0);
         leftbackDrive.setPower(0);
+    }
+
+
+    public void slideLift(double time){
+        runtime.reset();
+        while(runtime.seconds() < time){
+            slideMotor.setPower(0.5);
+            slideMotor2.setPower(-0.5);
+        }
+        slideMotor.setPower(0);
+        slideMotor2.setPower(0);
+    }
+
+    public void slideLower(double time){
+        runtime.reset();
+        while(runtime.seconds() < time){
+            slideMotor.setPower(-0.5);
+            slideMotor2.setPower(0.5);
+        }
+        slideMotor.setPower(0);
+        slideMotor.setPower(0);
     }
 
 
