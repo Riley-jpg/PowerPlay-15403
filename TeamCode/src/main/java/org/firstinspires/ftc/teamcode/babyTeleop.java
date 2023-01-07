@@ -44,7 +44,7 @@ public class babyTeleop extends Auto_Util {
         while (opModeIsActive()) {
 
             //Drive Code
-           // robot.slideMotor.setTargetPosition(0);
+
             //while(gamepad2.left_stick_y < 0){
               // if(robot.slideMotor.getCurrentPosition() >= 0){
                   //  robot.slideMotor.setPower(0);
@@ -93,13 +93,7 @@ public class babyTeleop extends Auto_Util {
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
 
-            /*if (gamepad2.a){
-                encoderLift(1, 13,10, 0,);}
-            if (gamepad2.b) {
-                encoderLift(1, 21, 10, 0);}
-            if (gamepad2.y) {
-                encoderLift(1, 35, 10, 0);}
-            if(gamepad2.x)*/
+
 
 
             //Unused Code Graveyard:
@@ -115,6 +109,13 @@ public class babyTeleop extends Auto_Util {
                 robot.linearActuator.setPower(0);
                 robot.linearActuator2.setPower(0);
             }*/
+               /*if (gamepad2.a){
+                encoderLift(1, 13,10, 0,);}
+            if (gamepad2.b) {
+                encoderLift(1, 21, 10, 0);}
+            if (gamepad2.y) {
+                encoderLift(1, 35, 10, 0);}
+            if(gamepad2.x)*/
 
             /*if (gamepad2.a) {
                 robot.slideMotor.setPower(1);   //Extend
