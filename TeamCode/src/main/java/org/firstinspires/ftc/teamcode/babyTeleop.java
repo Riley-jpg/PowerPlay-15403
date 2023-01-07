@@ -86,6 +86,7 @@ public class babyTeleop extends Auto_Util {
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
 
+            /*
             if (gamepad2.a){
                 encoderLift(1, 13, 13, 10, 0);}
             if (gamepad2.b) {
@@ -94,6 +95,8 @@ public class babyTeleop extends Auto_Util {
                 encoderLift(1, 35, 35, 10, 0);}
             if(gamepad2.x){
                 encoderLift(1, -35, -35, 10, 0);}
+
+             */
 
 
             //Unused Code Graveyard:
