@@ -35,11 +35,16 @@ import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraException;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraManager;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.internal.collections.EvictingBlockingQueue;
@@ -105,6 +110,7 @@ public abstract class Auto_Util extends LinearOpMode {
     String /*servo1name = "wobbleS",*/ intakeServoname = "intake"/*, crservo2name = "pastaS2"*/;
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
     //Variables for Camera
+
     /*
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
     private static final String LABEL_FIRST_ELEMENT = "Quad";
@@ -144,8 +150,24 @@ public abstract class Auto_Util extends LinearOpMode {
     int cMaxX = 640;
     int cMinY = 1;
     int cMaxY = 480;
+    */
 
-     */
+    //TensorFlow Variables
+    final double DESIRED_DISTANCE = 8.0;
+    final double MM_PER_INCH = 25.40 ;   //  Metric conversion
+    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    private static final String[] LABELS = {
+            "1 Bolt",
+            "2 Bulb",
+            "3 Panel"
+    };
+    private static final String VUFORIA_KEY =
+            "AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
+    VuforiaLocalizer vuforia    = null;
+    OpenGLMatrix targetPose     = null;
+    String targetName           = "";
+    private TFObjectDetector tfod;
+    
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("you shouldn't be here!", "This program isnt meant to be run, only for use with all of its methods");
@@ -888,6 +910,151 @@ public abstract class Auto_Util extends LinearOpMode {
     }
 
     */
+    /*
+    ___________________________________________________________________________________________________________________________________
+    -
+    -TensorFlow
+    -
+    ___________________________________________________________________________________________________________________________________
+     */
+        public String useVision(){
+            String objectLabel = "None";
+            int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+            VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+            parameters.vuforiaLicenseKey = VUFORIA_KEY;
+
+            // Turn off Extended tracking.  Set this true if you want Vuforia to track beyond the target.
+            parameters.useExtendedTracking = false;
+
+            // Connect to the camera we are to use.  This name must match what is set up in Robot Configuration
+            parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+            this.vuforia = ClassFactory.getInstance().createVuforia(parameters);
+
+            // Load the trackable objects from the Assets file, and give them meaningful names
+            VuforiaTrackables targetsPowerPlay = this.vuforia.loadTrackablesFromAsset("PowerPlay.tflite");
+            targetsPowerPlay.get(0).setName("Red Audience Wall");
+            targetsPowerPlay.get(1).setName("Red Rear Wall");
+            targetsPowerPlay.get(2).setName("Blue Audience Wall");
+            targetsPowerPlay.get(3).setName("Blue Rear Wall");
+
+            targetsPowerPlay.activate();
+
+            // The TFObjectDetector uses the camera frames from the VuforiaLocalizer, so we create that
+            // first.
+            initVuforia();
+            initTfod();
+
+            if (tfod != null) {
+                tfod.activate();
+
+                // The TensorFlow software will scale the input images from the camera to a lower resolution.
+                // This can result in lower detection accuracy at longer distances (> 55cm or 22").
+                // If your target is at distance greater than 50 cm (20") you can increase the magnification value
+                // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
+                // should be set to the value of the images used to create the TensorFlow Object Detection model
+                // (typically 16/9).
+                tfod.setZoom(1.0, 16.0/9.0);
+            }
+
+            telemetry.addData(">", "Press Play to start op mode");
+            telemetry.update();
+            waitForStart();
+
+
+            if (opModeIsActive()) {
+                while (opModeIsActive()) {
+                    if (tfod != null) {
+                        // getUpdatedRecognitions() will return null if no new information is available since
+                        // the last time that call was made.
+                        List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
+                        if (updatedRecognitions != null) {
+                            telemetry.addData("# Objects Detected", updatedRecognitions.size());
+
+                            // step through the list of recognitions and display image position/size information for each one
+                            // Note: "Image number" refers to the randomized image orientation/number
+                            for (Recognition recognition : updatedRecognitions) {
+                                double col = (recognition.getLeft() + recognition.getRight()) / 2;
+                                double row = (recognition.getTop() + recognition.getBottom()) / 2;
+                                double width = Math.abs(recognition.getRight() - recognition.getLeft());
+                                double height = Math.abs(recognition.getTop() - recognition.getBottom());
+
+                                telemetry.addData("", " ");
+                                telemetry.addData("Image", "%s (%.0f %% Conf.)", recognition.getLabel(), recognition.getConfidence() * 100);
+                                telemetry.addData("- Position (Row/Col)", "%.0f / %.0f", row, col);
+                                telemetry.addData("- Size (Width/Height)", "%.0f / %.0f", width, height);
+
+                                objectLabel = recognition.getLabel();
+                            }
+                            telemetry.update();
+                        }
+                    }
+                }
+                boolean targetFound = false;    // Set to true when a target is detected by Vuforia
+                double targetRange = 0;        // Distance from camera to target in Inches
+                double targetBearing = 0;        // Robot Heading, relative to target.  Positive degrees means target is to the right.
+
+                for (VuforiaTrackable trackable : targetsPowerPlay) {
+                    if (((VuforiaTrackableDefaultListener) trackable.getListener()).isVisible()) {
+                        targetPose = ((VuforiaTrackableDefaultListener) trackable.getListener()).getVuforiaCameraFromTarget();
+
+                        // if we have a target, process the "pose" to determine the position of the target relative to the robot.
+                        if (targetPose != null) {
+                            targetFound = true;
+                            targetName = trackable.getName();
+                            VectorF trans = targetPose.getTranslation();
+
+                            // Extract the X & Y components of the offset of the target relative to the robot
+                            double targetX = trans.get(0) / MM_PER_INCH; // Image X axis
+                            double targetY = trans.get(2) / MM_PER_INCH; // Image Z axis
+
+                            // target range is based on distance from robot position to origin (right triangle).
+                            targetRange = Math.hypot(targetX, targetY);
+
+                            // target bearing is based on angle formed between the X axis and the target range line
+                            targetBearing = Math.toDegrees(Math.asin(targetX / targetRange));
+
+                            break;  // jump out of target tracking loop if we find a target.
+                        }
+                    }
+                }
+
+                if (targetFound) {
+                    telemetry.addLine("Hello World!");
+                } else {
+                    telemetry.addLine("Nothing Found!");
+                }
+                telemetry.update();
+            }
+            return objectLabel;
+        }
+
+    //Initialize the Vuforia localization engine.
+    private void initVuforia() {
+        /*
+         * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
+         */
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
+
+        parameters.vuforiaLicenseKey = VUFORIA_KEY;
+        parameters.cameraName = hardwareMap.get(WebcamName.class, "Webcam 1");
+
+        //  Instantiate the Vuforia engine
+        vuforia = ClassFactory.getInstance().createVuforia(parameters);
+    }
+
+    //Initialize the TensorFlow Object Detection engine.
+    private void initTfod() {
+        int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
+                "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
+        tfodParameters.minResultConfidence = 0.75f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 300;
+        tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
+
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+    }
     /*
     ___________________________________________________________________________________________________________________________________
     -

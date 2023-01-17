@@ -16,27 +16,31 @@ import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
+import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
+import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.teamcode.babyHwMap;
 
+import java.util.List;
+
 @Autonomous(name="TensorFlowDriveTest", group="TensorFlowTest")
-public class TensorFlowDriveTest extends Auto_Util {
+public class TensorFlowDriveTest extends Auto_Util{
+    public void runOpMode() throws InterruptedException {
+        initAuto();
 
-    final double DESIRED_DISTANCE = 8.0;
-    final double MM_PER_INCH = 25.40 ;   //  Metric conversion
-
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-
-    private static final String[] LABELS = {
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
-    };
-
-    private static final String VUFORIA_KEY =
-            "AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
-
-    VuforiaLocalizer vuforia    = null;
-    OpenGLMatrix targetPose     = null;
-    String targetName           = "";
-
+        waitForStart();
+        String objectDetected = useVision();
+        encoderDrive(DRIVE_SPEED, 16,16,10,0);
+        if(objectDetected == "Bolt"){
+            encoderStrafe(STRAFE_SPEED, -10, -10, 10, 0);
+        }
+        else if (objectDetected == "Bulb"){
+        }
+        else if (objectDetected == "Panel"){
+            encoderStrafe(STRAFE_SPEED, 10, 10, 10, 0);
+        }
+        else {
+            telemetry.addData("Value:", objectDetected);
+            telemetry.update();
+        }
+    }
 }
