@@ -58,7 +58,7 @@ public class babyTeleop extends Auto_Util {
             lbPower = fwdBackPower - turnPower + strafePower;
             rbPower = fwdBackPower + turnPower - strafePower;
 
-
+            //slow mode stuff
 
             if (gamepad1.a == true){
                 lfPower = lfPower*.1;
@@ -79,6 +79,7 @@ public class babyTeleop extends Auto_Util {
             } else {
                 slowamount = 1;
             }
+            //slides stuff
 
            robot.slideMotor.setPower(-liftPower);
            robot.slideMotor2.setPower(liftPower);
