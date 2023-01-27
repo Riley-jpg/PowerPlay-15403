@@ -18,9 +18,9 @@ public class babyTeleop extends Auto_Util {
 
     babyHwMap robot = new babyHwMap();
     private ElapsedTime runtime = new ElapsedTime();
-    static double turnPower = 0.5;
-    static double fwdBackPower = 0.5;
-    static double strafePower = 0.5;
+    static double turnPower ;
+    static double fwdBackPower;
+    static double strafePower;
     static double lbPower;
     static double lfPower;
     static double rbPower;
@@ -43,20 +43,22 @@ public class babyTeleop extends Auto_Util {
 
         while (opModeIsActive()) {
 
-            //Drive Code
+            //Drive
 
             fwdBackPower =- gamepad1.left_stick_y;
             strafePower = -gamepad1.left_stick_x;
-            turnPower =- gamepad1.right_stick_x*.30;
+            turnPower =- gamepad1.right_stick_x;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
 
 
-            lfPower = fwdBackPower - turnPower - strafePower;
-            rfPower = fwdBackPower + turnPower + strafePower;
-            lbPower = fwdBackPower - turnPower + strafePower;
-            rbPower = fwdBackPower + turnPower - strafePower;
+            lfPower = (fwdBackPower - turnPower - strafePower)*.2;
+            rfPower = (fwdBackPower + turnPower + strafePower)*.2;
+            lbPower = (fwdBackPower - turnPower + strafePower)*.2;
+            rbPower = (fwdBackPower + turnPower - strafePower)*.2;
+
+
 
             //slow mode stuff
 
@@ -86,6 +88,19 @@ public class babyTeleop extends Auto_Util {
 
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
+
+            if(gamepad1.dpad_up){
+                robot.leftfrontDrive.setPower(1);
+            }
+            if(gamepad1.dpad_right){
+                robot.rightfrontDrive.setPower(1);
+            }
+            if(gamepad1.dpad_down){
+                robot.leftbackDrive.setPower(1);
+            }
+            if(gamepad1.dpad_left){
+                robot.rightbackDrive.setPower(1);
+            }
 
             /*
             if (gamepad2.a){
@@ -125,8 +140,10 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor2.setPower(0);
                 }*/
 
-           telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
-            telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+           telemetry.addData("lfD", robot.leftfrontDrive.getCurrentPosition());
+            telemetry.addData("rfD", robot.rightfrontDrive.getCurrentPosition());
+            telemetry.addData("lbD", robot.leftbackDrive.getCurrentPosition());
+            telemetry.addData("rbD", robot.rightbackDrive.getCurrentPosition());
             telemetry.update();
     }
 }}
