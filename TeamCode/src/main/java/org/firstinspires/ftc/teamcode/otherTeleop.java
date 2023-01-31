@@ -11,7 +11,7 @@ import com.qualcomm.robotcore.util.Range;
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
-@TeleOp (name= "other teleop", group= "Pushbot")
+//@TeleOp (name= "other teleop", group= "Pushbot")
 public class otherTeleop extends otherHwMap{
 
     //speed variables here!!
@@ -20,7 +20,6 @@ public class otherTeleop extends otherHwMap{
     private ElapsedTime runtime = new ElapsedTime();
 
     public void runOpMode(){
-        if(gamepad1.left)
 
     }
 
