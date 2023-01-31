@@ -45,30 +45,27 @@ public class babyTeleop extends Auto_Util {
 
             //Drive
 
-            fwdBackPower =- gamepad1.left_stick_y;
-            strafePower = -gamepad1.left_stick_x;
-            turnPower =- gamepad1.right_stick_x;
+            fwdBackPower =- gamepad1.left_stick_y*.4;
+            strafePower = -gamepad1.left_stick_x*.4;
+            turnPower =- gamepad1.right_stick_x*.5;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
 
 
-            lfPower = (fwdBackPower - turnPower - strafePower)*.2;
-            rfPower = (fwdBackPower + turnPower + strafePower)*.2;
-            lbPower = (fwdBackPower - turnPower + strafePower)*.2;
-            rbPower = (fwdBackPower + turnPower - strafePower)*.2;
+            lfPower = (fwdBackPower - turnPower - strafePower);
+            rfPower = (fwdBackPower + turnPower + strafePower);
+            lbPower = (fwdBackPower - turnPower + strafePower);
+            rbPower = (fwdBackPower + turnPower - strafePower);
 
 
 
             //slow mode stuff
 
-            if (gamepad1.a == true){
-                lfPower = lfPower*.1;
-                lbPower = lbPower*.1;
-                rfPower = rfPower*.1;
-                rbPower = rbPower*.1;
+            if (gamepad1.left_bumper){
+               slowamount = .1;
             } else{
-
+                slowamount = 1;
             }
 
             robot.leftfrontDrive.setPower(lfPower*slowamount);
@@ -102,17 +99,7 @@ public class babyTeleop extends Auto_Util {
                 robot.rightbackDrive.setPower(1);
             }
 
-            /*
-            if (gamepad2.a){
-                encoderLift(1, 13, 13, 10, 0);}
-            if (gamepad2.b) {
-                encoderLift(1, 21, 21, 10, 0);}
-            if (gamepad2.y) {
-                encoderLift(1, 35, 35, 10, 0);}
-            if(gamepad2.x){
-                encoderLift(1, -35, -35, 10, 0);}
 
-             */
 
 
             //Unused Code Graveyard:
@@ -139,6 +126,17 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
                 robot.slideMotor2.setPower(0);
                 }*/
+             /*
+            if (gamepad2.a){
+                encoderLift(1, 13, 13, 10, 0);}
+            if (gamepad2.b) {
+                encoderLift(1, 21, 21, 10, 0);}
+            if (gamepad2.y) {
+                encoderLift(1, 35, 35, 10, 0);}
+            if(gamepad2.x){
+                encoderLift(1, -35, -35, 10, 0);}
+
+             */
 
            telemetry.addData("lfD", robot.leftfrontDrive.getCurrentPosition());
             telemetry.addData("rfD", robot.rightfrontDrive.getCurrentPosition());
