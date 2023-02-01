@@ -18,9 +18,9 @@ public class babyTeleop extends Auto_Util {
 
     babyHwMap robot = new babyHwMap();
     private ElapsedTime runtime = new ElapsedTime();
-    static double turnPower = 0.5;
-    static double fwdBackPower = 0.5;
-    static double strafePower = 0.5;
+    static double turnPower ;
+    static double fwdBackPower;
+    static double strafePower;
     static double lbPower;
     static double lfPower;
     static double rbPower;
@@ -43,30 +43,29 @@ public class babyTeleop extends Auto_Util {
 
         while (opModeIsActive()) {
 
-            //Drive Code
+            //Drive
 
-            fwdBackPower =- gamepad1.left_stick_y;
-            strafePower = -gamepad1.left_stick_x;
-            turnPower =- gamepad1.right_stick_x*.30;
+            fwdBackPower =- gamepad1.left_stick_y*.4;
+            strafePower = -gamepad1.left_stick_x*.4;
+            turnPower =- gamepad1.right_stick_x*.5;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
 
 
-            lfPower = fwdBackPower - turnPower - strafePower;
-            rfPower = fwdBackPower + turnPower + strafePower;
-            lbPower = fwdBackPower - turnPower + strafePower;
-            rbPower = fwdBackPower + turnPower - strafePower;
+            lfPower = (fwdBackPower - turnPower - strafePower);
+            rfPower = (fwdBackPower + turnPower + strafePower);
+            lbPower = (fwdBackPower - turnPower + strafePower);
+            rbPower = (fwdBackPower + turnPower - strafePower);
 
 
 
-            if (gamepad1.a == true){
-                lfPower = lfPower*.1;
-                lbPower = lbPower*.1;
-                rfPower = rfPower*.1;
-                rbPower = rbPower*.1;
+            //slow mode stuff
+
+            if (gamepad1.left_bumper){
+               slowamount = .1;
             } else{
-
+                slowamount = 1;
             }
 
             robot.leftfrontDrive.setPower(lfPower*slowamount);
@@ -79,6 +78,7 @@ public class babyTeleop extends Auto_Util {
             } else {
                 slowamount = 1;
             }
+            //slides stuff
 
            robot.slideMotor.setPower(-liftPower);
            robot.slideMotor2.setPower(liftPower);
@@ -86,17 +86,20 @@ public class babyTeleop extends Auto_Util {
 
             robot.intakeServo.setPower(gamepad2.right_stick_y);
 
-            /*
-            if (gamepad2.a){
-                encoderLift(1, 13, 13, 10, 0);}
-            if (gamepad2.b) {
-                encoderLift(1, 21, 21, 10, 0);}
-            if (gamepad2.y) {
-                encoderLift(1, 35, 35, 10, 0);}
-            if(gamepad2.x){
-                encoderLift(1, -35, -35, 10, 0);}
+            if(gamepad1.dpad_up){
+                robot.leftfrontDrive.setPower(1);
+            }
+            if(gamepad1.dpad_right){
+                robot.rightfrontDrive.setPower(1);
+            }
+            if(gamepad1.dpad_down){
+                robot.leftbackDrive.setPower(1);
+            }
+            if(gamepad1.dpad_left){
+                robot.rightbackDrive.setPower(1);
+            }
 
-             */
+
 
 
             //Unused Code Graveyard:
@@ -123,9 +126,22 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
                 robot.slideMotor2.setPower(0);
                 }*/
+             /*
+            if (gamepad2.a){
+                encoderLift(1, 13, 13, 10, 0);}
+            if (gamepad2.b) {
+                encoderLift(1, 21, 21, 10, 0);}
+            if (gamepad2.y) {
+                encoderLift(1, 35, 35, 10, 0);}
+            if(gamepad2.x){
+                encoderLift(1, -35, -35, 10, 0);}
 
-           telemetry.addData("slidePosit", robot.slideMotor.getCurrentPosition());
-            telemetry.addData("slide2Posit", robot.slideMotor2.getCurrentPosition());
+             */
+
+           telemetry.addData("lfD", robot.leftfrontDrive.getCurrentPosition());
+            telemetry.addData("rfD", robot.rightfrontDrive.getCurrentPosition());
+            telemetry.addData("lbD", robot.leftbackDrive.getCurrentPosition());
+            telemetry.addData("rbD", robot.rightbackDrive.getCurrentPosition());
             telemetry.update();
     }
 }}
