@@ -4,6 +4,8 @@ import static android.graphics.Color.blue;
 import static android.graphics.Color.green;
 import static android.graphics.Color.red;
 
+import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaBase.MM_PER_INCH;
+
 import android.graphics.Bitmap;
 import android.graphics.ImageFormat;
 import android.os.Handler;
@@ -70,12 +72,12 @@ public abstract class Auto_Util extends LinearOpMode {
     static final double DRIVE_GEAR_REDUCTION = 0.75;     // This is < 1.0 if geared UP
     static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     static final double ENCODER_COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) / (WHEEL_DIAMETER_INCHES * 3.14159);
-    static final double DRIVE_SPEED = 0.1;
-    static final double STRAFE_SPEED = 0.1;
+    static final double DRIVE_SPEED = 0.01;
+    static final double STRAFE_SPEED = 0.01;
     static final double LIFT_SPEED = 0.7;
-    static final double TARGET_SHOOTER_SPEED = 1.975;
 
     //Vision Colors
+
     /*
     int maxAll = getColorInt(255, 255, 255, 255);
     int minAll = getColorInt(255, 0, 0, 0);
@@ -85,8 +87,8 @@ public abstract class Auto_Util extends LinearOpMode {
     int minBlue = getColorInt(255, 100, 100, 100);
     int maxCap = getColorInt(255, 92, 255, 228);
     int minCap = getColorInt(255, 25, 181, 155);
+*/
 
-     */
 
     public static final int RED = 1;
     public static final int BLUE = 2;
@@ -109,15 +111,16 @@ public abstract class Auto_Util extends LinearOpMode {
     String util1name = "rightSlide", util2name = "leftSlide"; //, util3name = "shootM", util4name = "wobbleG";
     String /*servo1name = "wobbleS",*/ intakeServoname = "intake"/*, crservo2name = "pastaS2"*/;
     String verticalLeftEncoderName = lbName, verticalRightEncoderName = lfName, horizontalEncoderName = rfName;
+
     //Variables for Camera
 
-    /*
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Quad";
-    private static final String LABEL_SECOND_ELEMENT = "Single";
-    private static int stackSize;
+    private static final String LABEL_FIRST_ELEMENT = "Bolt";
+    private static final String LABEL_SECOND_ELEMENT = "Bulb";
+    private static final String LABEL_THIRD_ELEMENT = "Panel";
+    private static String objectLabel = "None";
     private static final String VUFORIA_KEY =
-            "ASr8vlr/////AAABmQLvbOpFkkU9uYwJWNx5o2Antqe3VGKoedUKq3jObB/CKqlUQVEt/vJFkLrOinRFu+wKPJJx1LZe8vYwTUNhYX0/ygb2Oukz3sgnh3k0TMAWBL0gJXnlaw2JzGzwXMy7kL4K1EUdIoWKJgyMSDkWDeNa9JXMelIkU0mgPhQ1PpSqfDiFWcIpalRHVDMF+lR7wR67jJjt7sUWe3TPc2RoUZI9Ratv22wKzXGZTWUEHcvPIkJRyZjjXzzWper4e7gVhJBLEtZA/0U5Nqlasyl0A39AzatrIkCAa16P3J8Z0KKtza1YSKZRYc/Sz022CaSqCtgtG1jq5oK14I2JjQZIufdNLNc9uaXz3qN08jRaxujJ";
+            "AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
     //Color Sensors
@@ -150,9 +153,10 @@ public abstract class Auto_Util extends LinearOpMode {
     int cMaxX = 640;
     int cMinY = 1;
     int cMaxY = 480;
-    */
+
 
     //TensorFlow Variables
+    /*
     final double DESIRED_DISTANCE = 8.0;
     final double MM_PER_INCH = 25.40 ;   //  Metric conversion
     private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
@@ -167,6 +171,7 @@ public abstract class Auto_Util extends LinearOpMode {
     OpenGLMatrix targetPose     = null;
     String targetName           = "";
     private TFObjectDetector tfod;
+     */
     
     @Override
     public void runOpMode() throws InterruptedException {
@@ -308,9 +313,9 @@ public abstract class Auto_Util extends LinearOpMode {
 
     public double accelerate(DcMotor motor, double speed, double target) {
         if (motor.getCurrentPosition() < (target / 10)) {
-            return speed * 1.30;
+            return speed * 1;
         } else if (motor.getCurrentPosition() > (target * 8 / 10)) {
-            return speed * 0.9;
+            return speed * 1;
         }
         return speed;
     }
@@ -377,12 +382,12 @@ public abstract class Auto_Util extends LinearOpMode {
                 //telemetry.addData("leftSpeed",leftSpeed);
                 telemetry.addData("heading", heading(imu));
                 telemetry.update();
-                leftSpeed = (accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget) / 2);
-                rightSpeed = (accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget) / 2);
-                rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
-                rightfrontDrive.setPower((rightSpeed + PI(desiredHeading)));
-                leftfrontDrive.setPower((leftSpeed - PI(desiredHeading)));
-                leftbackDrive.setPower((leftSpeed - PI(desiredHeading)));
+                leftSpeed = ((accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget)) / 2);
+                rightSpeed = ((accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget)) / 2);
+                rightbackDrive.setPower((rightSpeed + PI(desiredHeading))*.4);
+                rightfrontDrive.setPower((rightSpeed + PI(desiredHeading))*.4);
+                leftfrontDrive.setPower((leftSpeed - PI(desiredHeading))*.4);
+                leftbackDrive.setPower((leftSpeed - PI(desiredHeading))*.4);
             }
 
             rightfrontDrive.setPower(0);
@@ -458,8 +463,8 @@ public abstract class Auto_Util extends LinearOpMode {
                 telemetry.addData("rightSpeed", rightSpeed);
                 telemetry.addData("leftSpeed", leftSpeed);
                 telemetry.update();
-                leftSpeed = (accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget) / 2);
-                rightSpeed = (accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget) / 2);
+                leftSpeed = ((accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget)) / 2);
+                rightSpeed = ((accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget)) / 2);
                 rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
                 rightfrontDrive.setPower((rightSpeed + PI(desiredHeading)));
                 leftfrontDrive.setPower((leftSpeed - PI(desiredHeading)));
@@ -917,6 +922,7 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
+        /*
         public String useVision(){
             String objectLabel = "None";
             int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
@@ -1005,7 +1011,8 @@ public abstract class Auto_Util extends LinearOpMode {
                             VectorF trans = targetPose.getTranslation();
 
                             // Extract the X & Y components of the offset of the target relative to the robot
-                            double targetX = trans.get(0) / MM_PER_INCH; // Image X axis
+                            double targetX; // Image X axis
+                            targetX = trans.get(0) / MM_PER_INCH;
                             double targetY = trans.get(2) / MM_PER_INCH; // Image Z axis
 
                             // target range is based on distance from robot position to origin (right triangle).
@@ -1028,12 +1035,14 @@ public abstract class Auto_Util extends LinearOpMode {
             }
             return objectLabel;
         }
-
+*/
     //Initialize the Vuforia localization engine.
+        /*
     private void initVuforia() {
         /*
          * Configure Vuforia by creating a Parameter object, and passing it to the Vuforia engine.
          */
+                /*
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
@@ -1055,6 +1064,8 @@ public abstract class Auto_Util extends LinearOpMode {
 
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
+
+                 */
     /*
     ___________________________________________________________________________________________________________________________________
     -
@@ -1173,29 +1184,37 @@ public abstract class Auto_Util extends LinearOpMode {
     -
     ___________________________________________________________________________________________________________________________________
      */
-    /*
-    public int ub_vision() {
+
+    public String ub_vision() {
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             int i = 0;
             for (Recognition recognition : updatedRecognitions) {
                 if (recognition.getLabel() == LABEL_FIRST_ELEMENT) {
-                    stackSize = 2;
-                    return stackSize;
-                } else if (stackSize != 2 && recognition.getLabel() == LABEL_SECOND_ELEMENT) {
-                    stackSize = 1;
+                    objectLabel = "Bolt";
+                    return objectLabel;
+                } else if (recognition.getLabel() == LABEL_SECOND_ELEMENT) {
+                    objectLabel = "Bulb";
+                    return objectLabel;
+                } else if (recognition.getLabel() == LABEL_THIRD_ELEMENT){
+                    objectLabel = "Panel";
+                    return objectLabel;
+                } else{
+                    objectLabel = "Nothing to see";
+                    return objectLabel;
                 }
-                telemetry.addData("Recognition Label: ", recognition.getLabel());
+                //telemetry.addData("Recognition Label: ", recognition.getLabel());
+                //telemetry.update();
             }
         }
-        return stackSize;
+        return "Not initialized";
     }
 
     public void initCamera() {
         initVuforia();
         telemetry.addData("completed vuforia init", "uhuh");
         initTfod();
-        stackSize = 0;
+        objectLabel = "None";
         if (tfod != null) {
             tfod.activate();
             tfod.setZoom(1.0, 16.0 / 9.0);
@@ -1218,11 +1237,13 @@ public abstract class Auto_Util extends LinearOpMode {
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
         tfodParameters.minResultConfidence = 0.8f;
+        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
     }
 
-     */
+
 
         /*
     ___________________________________________________________________________________________________________________________________

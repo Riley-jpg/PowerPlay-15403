@@ -26,10 +26,13 @@ import java.util.List;
 public class TensorFlowDriveTest extends Auto_Util{
     public void runOpMode() throws InterruptedException {
         initAuto();
+        initCamera();
 
         waitForStart();
-        String objectDetected = useVision();
-        encoderDrive(DRIVE_SPEED, 16,16,10,0);
+        String objectDetected = ub_vision();
+        telemetry.addData("Value:", objectDetected);
+        telemetry.update();
+        encoderDrive(1, 18,18,10,0);
         if(objectDetected == "Bolt"){
             encoderStrafe(STRAFE_SPEED, -10, -10, 10, 0);
         }
