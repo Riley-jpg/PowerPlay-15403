@@ -114,10 +114,15 @@ public abstract class Auto_Util extends LinearOpMode {
 
     //Variables for Camera
 
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    private static final String LABEL_FIRST_ELEMENT = "Bolt";
-    private static final String LABEL_SECOND_ELEMENT = "Bulb";
-    private static final String LABEL_THIRD_ELEMENT = "Panel";
+    public static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    public static final String[] LABELS = {
+            "1 Bolt",
+            "2 Bulb",
+            "3 Panel"
+    };
+    private static final String LABEL_FIRST_ELEMENT = "1 Bolt";
+    private static final String LABEL_SECOND_ELEMENT = "2 Bulb";
+    private static final String LABEL_THIRD_ELEMENT = "3 Panel";
     private static String objectLabel = "None";
     private static final String VUFORIA_KEY =
             "AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
@@ -1186,6 +1191,7 @@ public abstract class Auto_Util extends LinearOpMode {
      */
 
     public String ub_vision() {
+        initCamera();
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             int i = 0;
@@ -1213,11 +1219,14 @@ public abstract class Auto_Util extends LinearOpMode {
     public void initCamera() {
         initVuforia();
         telemetry.addData("completed vuforia init", "uhuh");
+        telemetry.update();
         initTfod();
         objectLabel = "None";
         if (tfod != null) {
             tfod.activate();
             tfod.setZoom(1.0, 16.0 / 9.0);
+            telemetry.addData("tfod activated", "yippee");
+            telemetry.update();
         }
     }
 
@@ -1240,7 +1249,10 @@ public abstract class Auto_Util extends LinearOpMode {
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
+        telemetry.addData("eat more bread", "tfod");
+        telemetry.update();
+       // tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
+        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
 
 

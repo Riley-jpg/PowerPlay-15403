@@ -26,24 +26,24 @@ import java.util.List;
 public class TensorFlowDriveTest extends Auto_Util{
     public void runOpMode() throws InterruptedException {
         initAuto();
-        initCamera();
 
         waitForStart();
         String objectDetected = ub_vision();
         telemetry.addData("Value:", objectDetected);
         telemetry.update();
         encoderDrive(1, 18,18,10,0);
-        if(objectDetected == "Bolt"){
+        if(objectDetected == "1 Bolt"){
             encoderStrafe(STRAFE_SPEED, -10, -10, 10, 0);
         }
-        else if (objectDetected == "Bulb"){
+        else if (objectDetected == "2 Bulb"){
         }
-        else if (objectDetected == "Panel"){
+        else if (objectDetected == "3 Panel"){
             encoderStrafe(STRAFE_SPEED, 10, 10, 10, 0);
         }
         else {
             telemetry.addData("Value:", objectDetected);
             telemetry.update();
         }
+        sleep(100000000);
     }
 }
