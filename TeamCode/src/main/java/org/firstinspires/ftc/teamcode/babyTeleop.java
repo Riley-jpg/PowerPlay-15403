@@ -45,9 +45,9 @@ public class babyTeleop extends Auto_Util {
 
             //Drive
 
-            fwdBackPower =- gamepad1.left_stick_y*.4;
-            strafePower = -gamepad1.left_stick_x*.4;
-            turnPower =- gamepad1.right_stick_x*.5;
+            fwdBackPower =- gamepad1.left_stick_y*.6;
+            strafePower = -gamepad1.left_stick_x*.6;
+            turnPower = -gamepad1.right_stick_x*.7;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
