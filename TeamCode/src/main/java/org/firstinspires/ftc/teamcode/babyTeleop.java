@@ -45,9 +45,9 @@ public class babyTeleop extends Auto_Util {
 
             //Drive
 
-            fwdBackPower =- gamepad1.left_stick_y*.6;
-            strafePower = -gamepad1.left_stick_x*.6;
-            turnPower = -gamepad1.right_stick_x*.7;
+            fwdBackPower =- gamepad1.left_stick_y*.7;
+            strafePower = -gamepad1.left_stick_x*.7;
+            turnPower = -gamepad1.right_stick_x*.8;
             liftPower = gamepad2.left_stick_y;
            // actPower = gamepad2.left_stick_y;
             // actPower2 = gamepad2.right_stick_y;
@@ -62,20 +62,16 @@ public class babyTeleop extends Auto_Util {
 
             //slow mode stuff
 
-            if (gamepad1.left_bumper){
-               slowamount = .1;
-            } else{
-                slowamount = 1;
-            }
-
             robot.leftfrontDrive.setPower(lfPower*slowamount);
             robot.leftbackDrive.setPower(lbPower*slowamount);
             robot.rightfrontDrive.setPower(rfPower*slowamount);
             robot.rightbackDrive.setPower(rbPower*slowamount);
 
-            if(gamepad1.right_bumper){
+           if (gamepad1.right_bumper){
                 slowamount = 0.5;
-            } else {
+            } else if(gamepad1.left_bumper) {
+                slowamount = 0.1;
+            }else{
                 slowamount = 1;
             }
             //slides stuff
@@ -126,17 +122,17 @@ public class babyTeleop extends Auto_Util {
                 robot.slideMotor.setPower(0);     //Stop Moving (Brake)
                 robot.slideMotor2.setPower(0);
                 }*/
-             /*
-            if (gamepad2.a){
-                encoderLift(1, 13, 13, 10, 0);}
-            if (gamepad2.b) {
-                encoderLift(1, 21, 21, 10, 0);}
-            if (gamepad2.y) {
-                encoderLift(1, 35, 35, 10, 0);}
-            if(gamepad2.x){
-                encoderLift(1, -35, -35, 10, 0);}
 
-             */
+           /* if (gamepad2.a){
+                encoderLift(1, 13 , 10, 0);}
+            if (gamepad2.b) {
+                encoderLift(1, 21, 10, 0);}
+            if (gamepad2.y) {
+                encoderLift(1, 35, 10, 0);}
+            if(gamepad2.x){
+                encoderLift(1, -35, 10, 0);}*/
+
+
 
            telemetry.addData("lfD", robot.leftfrontDrive.getCurrentPosition());
             telemetry.addData("rfD", robot.rightfrontDrive.getCurrentPosition());
