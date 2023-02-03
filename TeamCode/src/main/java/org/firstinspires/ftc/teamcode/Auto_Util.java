@@ -125,7 +125,9 @@ public abstract class Auto_Util extends LinearOpMode {
     private static final String LABEL_THIRD_ELEMENT = "3 Panel";
     private static String objectLabel = "None";
     private static final String VUFORIA_KEY =
-            "AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
+            "ATcQ9Jb/////AAABmXGJFOKC40g7kfOPBw8DjTpDq86FQe6MiHxC08OsCToNqw+fKiT29mM/lfoeeV88sikFGdia+F+WuD6Dm/Du3Ob+nWnN7gJCIwR+tO+qWxAguajBRQ2pxo7tODCvhYzof/ltTNRdFNNvSl82rRW+OLaI4/mn512YZfs3wNA0/hjZM5tUtsSHKKNigaAnY7QhSI9o8Wig8jtIbl6uKHyNiy8WYIjdJW2tfpwJa+jRskvcm2Eck6xPg1MfBHZzMefB9jYl/Sect6savpkYvRLIsfa16/rD7YDnR5vJVt7RVw+g1axFH3iYV1DlqxNRDgRvAO1HryGCABQUyS8h5hWGOu61S0ArgAqLQoFW38R0eJpg";
+
+            //"AYSaE87/////AAABmd4MI42q9kBngeU2bY+LVZJDc/gsy7wMwK3XXPjV+w2c4E3gtwueNUhCeDOIXgW1qP0yVp+ZvTxaTspl7CXq3ogA6ZUIqqLep9WvnAF5xLF7KIZOITXPRKcAPeK3O6o7gazhB0RdNpZKTavtq2TAV/D9LME20zAAZcwoSVRGzmFmnhS3TDsaWMtC+kWQDLh+cOlqB/SoTzsg07av6GLyNlz2PxkZnVhPqMHaDjeYdOrgTzT8KqG8XtC9GtC7tuBbC8+bE8zBExb2ToydJ4BLFKhG38Tms8oCNoGYUs1j3h3reNN1Obx74RtWqGSxTVcvml0mB0XsnAChPKoGt7WFzWrNLwEZ1BJ2jDkzjNYaIfow";
     private VuforiaLocalizer vuforia;
     private TFObjectDetector tfod;
     //Color Sensors
@@ -1191,7 +1193,7 @@ public abstract class Auto_Util extends LinearOpMode {
      */
 
     public String ub_vision() {
-        initCamera();
+        //initCamera();
         List<Recognition> updatedRecognitions = tfod.getUpdatedRecognitions();
         if (updatedRecognitions != null) {
             int i = 0;
@@ -1239,6 +1241,10 @@ public abstract class Auto_Util extends LinearOpMode {
         //parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
 
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
+        if (vuforia == null){
+            telemetry.addData("Vuforia did not initialize", "wwwww");
+            telemetry.update();
+        }
     }
 
     private void initTfod() {
