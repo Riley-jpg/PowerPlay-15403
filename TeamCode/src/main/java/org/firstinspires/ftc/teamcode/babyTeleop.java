@@ -45,7 +45,7 @@ public class babyTeleop extends Auto_Util {
 
             //Drive
 
-            fwdBackPower =- gamepad1.left_stick_y*.7;
+            fwdBackPower = -gamepad1.left_stick_y*.7;
             strafePower = -gamepad1.left_stick_x*.7;
             turnPower = -gamepad1.right_stick_x*.8;
             liftPower = gamepad2.left_stick_y;
@@ -80,8 +80,23 @@ public class babyTeleop extends Auto_Util {
            robot.slideMotor2.setPower(liftPower);
 
 
-            robot.intakeServo.setPower(gamepad2.right_stick_y);
+            robot.intakeServo.setPower(-gamepad2.right_stick_y);
 
+            //slide encoders possibly???? idk what i'm doing here
+            if(gamepad1.a){
+                robot.slideMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+                robot.slideMotor2.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            }
+            robot.slideMotor.setTargetPosition(0);
+            robot.slideMotor2.setTargetPosition(0);
+
+            if(gamepad2.right_trigger > .1){
+                robot.slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+                robot.slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            }
+
+
+            //indiv wheels for troubleshooting
             if(gamepad1.dpad_up){
                 robot.leftfrontDrive.setPower(1);
             }
@@ -94,6 +109,7 @@ public class babyTeleop extends Auto_Util {
             if(gamepad1.dpad_left){
                 robot.rightbackDrive.setPower(1);
             }
+
 
 
 
