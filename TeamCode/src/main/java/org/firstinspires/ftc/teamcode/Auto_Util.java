@@ -180,6 +180,7 @@ public abstract class Auto_Util extends LinearOpMode {
     private TFObjectDetector tfod;
      */
     
+    
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("you shouldn't be here!", "This program isnt meant to be run, only for use with all of its methods");
@@ -336,12 +337,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -0.1;
+                leftSpeed = speed * -1;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -0.1;
+                rightSpeed = speed * -1;
             } else {
                 rightSpeed = speed;
             }
@@ -391,10 +392,16 @@ public abstract class Auto_Util extends LinearOpMode {
                 telemetry.update();
                 leftSpeed = ((accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget)) / 2);
                 rightSpeed = ((accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget)) / 2);
-                rightbackDrive.setPower((rightSpeed + PI(desiredHeading))*.4);
+                /*rightbackDrive.setPower((rightSpeed + PI(desiredHeading))*.4);
                 rightfrontDrive.setPower((rightSpeed + PI(desiredHeading))*.4);
                 leftfrontDrive.setPower((leftSpeed - PI(desiredHeading))*.4);
                 leftbackDrive.setPower((leftSpeed - PI(desiredHeading))*.4);
+
+                 */
+                rightbackDrive.setPower((rightSpeed));
+                rightfrontDrive.setPower((rightSpeed));
+                leftfrontDrive.setPower((leftSpeed));
+                leftbackDrive.setPower((leftSpeed));
             }
 
             rightfrontDrive.setPower(0);
@@ -414,12 +421,12 @@ public abstract class Auto_Util extends LinearOpMode {
         double leftSpeed, rightSpeed;
         if (opModeIsActive()) {
             if (leftInches < 0) {
-                leftSpeed = speed * -0.1;
+                leftSpeed = speed * -1;
             } else {
                 leftSpeed = speed;
             }
             if (rightInches < 0) {
-                rightSpeed = speed * -0.1;
+                rightSpeed = speed * -1;
             } else {
                 rightSpeed = speed;
             }
@@ -472,10 +479,16 @@ public abstract class Auto_Util extends LinearOpMode {
                 telemetry.update();
                 leftSpeed = ((accelerate(leftbackDrive, leftSpeed, leftBackTarget) + accelerate(leftfrontDrive, leftSpeed, leftFrontTarget)) / 2);
                 rightSpeed = ((accelerate(rightbackDrive, rightSpeed, rightBackTarget) + accelerate(rightfrontDrive, rightSpeed, rightFrontTarget)) / 2);
-                rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
+                /*rightbackDrive.setPower((rightSpeed + PI(desiredHeading)));
                 rightfrontDrive.setPower((rightSpeed + PI(desiredHeading)));
                 leftfrontDrive.setPower((leftSpeed - PI(desiredHeading)));
                 leftbackDrive.setPower((leftSpeed - PI(desiredHeading)));
+
+                 */
+                rightbackDrive.setPower((rightSpeed));
+                rightfrontDrive.setPower((rightSpeed));
+                leftfrontDrive.setPower((leftSpeed));
+                leftbackDrive.setPower((leftSpeed));
             }
 
             leftbackDrive.setPower(0);
@@ -498,7 +511,7 @@ public abstract class Auto_Util extends LinearOpMode {
             }
             resetSlideEncoders();
             // Determine new target position, and pass to motor controller
-            heightTarget = (slideMotor.getCurrentPosition() - (int) (liftInches * ENCODER_COUNTS_PER_INCH));
+            heightTarget = (slideMotor.getCurrentPosition() + (int) (liftInches * ENCODER_COUNTS_PER_INCH));
             //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
             //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
             slideMotor.setTargetPosition(heightTarget);
@@ -509,8 +522,8 @@ public abstract class Auto_Util extends LinearOpMode {
 
             // reset the timeout time and start motion.
             runtime.reset();
-            slideMotor.setPower(0.7 * (liftSpeed + PI(desiredHeading)));
-            slideMotor2.setPower(0.7 * (liftSpeed + PI(desiredHeading)));
+            slideMotor.setPower((liftSpeed));
+            slideMotor2.setPower((liftSpeed));
 
 
 
@@ -529,7 +542,8 @@ public abstract class Auto_Util extends LinearOpMode {
                 telemetry.addData("Lift 2 Speed", liftSpeed);
                 telemetry.update();
                 liftSpeed = (accelerate(slideMotor, liftSpeed, heightTarget));
-                slideMotor.setPower((liftSpeed + PI(desiredHeading)));
+                slideMotor.setPower((liftSpeed));
+                slideMotor2.setPower((liftSpeed));
             }
 
             slideMotor.setPower(0);

@@ -10,6 +10,13 @@ public class Auto_Drive_Forward extends Auto_Util {
         initAuto();
 
         waitForStart();
-        encoderDrive(DRIVE_SPEED, 16,16,10,0);
+        /*
+        encoderDrive(0.1,4,4,20,0);
+        encoderStrafe(0.1,13,13,20,0);
+        encoderDrive(0.15, 31,31,20,0);
+        encoderStrafe(0.1,-7.75,-7.75,20,0);
+
+         */
+        encoderLift(1,10,20,0);
     }
 }

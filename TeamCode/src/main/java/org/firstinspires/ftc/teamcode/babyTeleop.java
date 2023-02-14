@@ -154,6 +154,9 @@ public class babyTeleop extends Auto_Util {
             telemetry.addData("rfD", robot.rightfrontDrive.getCurrentPosition());
             telemetry.addData("lbD", robot.leftbackDrive.getCurrentPosition());
             telemetry.addData("rbD", robot.rightbackDrive.getCurrentPosition());
+            telemetry.addData("rs", robot.slideMotor.getCurrentPosition());
+            telemetry.addData("ls", robot.slideMotor2.getCurrentPosition());
+
             telemetry.update();
     }
 }}
