@@ -44,14 +44,14 @@ public class AnActualWorkingAutonomous extends Auto_Util {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
+    //private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+     private static final String TFOD_MODEL_FILE  = "/FIRST/tflite_file/model_unquant.tflite";
 
 
     private static final String[] LABELS = {
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
+            "1-triangle",
+            "2-diamond",
+            "3-circle"
     };
 
     /*
@@ -134,16 +134,16 @@ public class AnActualWorkingAutonomous extends Auto_Util {
                             objectDetected = recognition.getLabel();
 
                             encoderDrive(1, 18,18,10,0);
-                            if(objectDetected == "1 Bolt"){
+                            if(objectDetected == "1-triangle"){
                                 encoderStrafe(1, -17, -17, 10, 0);
                                 tfod.deactivate();
                                 break;
                             }
-                            else if (objectDetected == "2 Bulb"){
+                            else if (objectDetected == "2-diamond"){
                                 tfod.deactivate();
                                 break;
                             }
-                            else if (objectDetected == "3 Panel"){
+                            else if (objectDetected == "3-circle"){
                                 encoderStrafe(0.5, 17, 17, 10, 0);
                                 tfod.deactivate();
                                 break;
