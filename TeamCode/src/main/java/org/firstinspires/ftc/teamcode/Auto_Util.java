@@ -180,7 +180,7 @@ public abstract class Auto_Util extends LinearOpMode {
     private TFObjectDetector tfod;
      */
     
-    
+
     @Override
     public void runOpMode() throws InterruptedException {
         telemetry.addData("you shouldn't be here!", "This program isnt meant to be run, only for use with all of its methods");
@@ -515,6 +515,7 @@ public abstract class Auto_Util extends LinearOpMode {
             //averageTarget = ((Math.abs(leftBackTarget) + Math.abs(leftFrontTarget)
             //      +Math.abs(rightFrontTarget) + Math.abs(rightBackTarget))/4);
             slideMotor.setTargetPosition(heightTarget);
+            slideMotor2.setTargetPosition(heightTarget * -1);
 
             // Turn On RUN_TO_POSITION
             slideMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
@@ -523,7 +524,7 @@ public abstract class Auto_Util extends LinearOpMode {
             // reset the timeout time and start motion.
             runtime.reset();
             slideMotor.setPower((liftSpeed));
-            slideMotor2.setPower((liftSpeed));
+            slideMotor2.setPower((liftSpeed * -1));
 
 
 
@@ -543,7 +544,7 @@ public abstract class Auto_Util extends LinearOpMode {
                 telemetry.update();
                 liftSpeed = (accelerate(slideMotor, liftSpeed, heightTarget));
                 slideMotor.setPower((liftSpeed));
-                slideMotor2.setPower((liftSpeed));
+                slideMotor2.setPower((liftSpeed * -1));
             }
 
             slideMotor.setPower(0);
@@ -1274,6 +1275,8 @@ public abstract class Auto_Util extends LinearOpMode {
        // tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABEL_FIRST_ELEMENT, LABEL_SECOND_ELEMENT, LABEL_THIRD_ELEMENT);
         tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
     }
+
+
 
 
 
