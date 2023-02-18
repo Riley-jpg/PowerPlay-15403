@@ -31,8 +31,8 @@ public class left_custom_autonomouse extends Auto_Util_custom {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    //private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
+    //private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/custom_model_15403_pp.tflite";
 
 
     private static final String[] LABELS = {
@@ -188,14 +188,14 @@ public class left_custom_autonomouse extends Auto_Util_custom {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.6f;
+        tfodParameters.minResultConfidence = 0.7f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        //tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+        //tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }
