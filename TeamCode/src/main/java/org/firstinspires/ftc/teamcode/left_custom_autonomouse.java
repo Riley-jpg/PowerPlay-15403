@@ -20,9 +20,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "left_stock_autonomous", group = "Autonomous")
+@Autonomous(name = "left_custom_autonomous", group = "Autonomous")
 
-public class left_stock_autonomouse extends Auto_Util {
+public class left_custom_autonomouse extends Auto_Util_custom {
 
     /*
      * Specify the source for the Tensor Flow Model.

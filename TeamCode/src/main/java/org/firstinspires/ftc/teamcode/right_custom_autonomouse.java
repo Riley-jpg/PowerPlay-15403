@@ -20,9 +20,9 @@ import java.util.List;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "left_stock_autonomous", group = "Autonomous")
+@Autonomous(name = "right_custom_autonomouse", group = "Autonomous")
 
-public class left_stock_autonomouse extends Auto_Util {
+public class right_custom_autonomouse extends Auto_Util_custom {
 
     /*
      * Specify the source for the Tensor Flow Model.
@@ -31,8 +31,8 @@ public class left_stock_autonomouse extends Auto_Util {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    //private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
+    //private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
 
 
     private static final String[] LABELS = {
@@ -121,32 +121,31 @@ public class left_stock_autonomouse extends Auto_Util {
                             objectDetected = recognition.getLabel();
 
                             encoderDrive(0.1,4,4,20,0);
-                            encoderStrafe(0.1,12,12,20,0);
+                            encoderStrafe(0.1,-19,-19,20,0);
                             encoderDrive(0.2, 31,31,20,0);
-                            encoderStrafe(0.1,-6.65,-6.65,20,0);
+                            encoderStrafe(0.2,6.25,6.25,20,0);
                             encoderLift(0.75,75,20,0);
-                            encoderDrive(0.08,2,2,20,0);
+                            encoderDrive(0.08,2.5,2.5,20,0);
                             encoderLift(0.5,-5,20,0);
                             intakeServo.setPower(1);
                             sleep(1500);
                             intakeServo.setPower(0);
                             encoderLift(0.75,5,20,0);
-                            encoderDrive(0.2,-3,-3,20,0);
+                            encoderDrive(0.2,-4.5,-4.5,20,0);
                             encoderLift(1,-50,20,0);
                             if(objectDetected == "1 Bolt"){
-                                encoderStrafe(0.4, -24, -24, 300, 0);
-                                encoderDrive(0.5,-9.5,9.5,20,0);
-                                encoderStrafe(0.5,4,4,20,0);
+                                encoderStrafe(0.2, -9, -9, 300, 0);
                                 tfod.deactivate();
                                 break;
                             }
                             else if (objectDetected == "2 Bulb"){
-                                encoderStrafe(0.2,-8,-8,20,0);
+                                encoderStrafe(0.2,8,8,20,0);
                                 tfod.deactivate();
                                 break;
                             }
                             else if (objectDetected == "3 Panel"){
-                                encoderStrafe(0.2, 9, 9, 300, 0);
+                                encoderStrafe(0.2, 24, 24, 300, 0);
+                                encoderDrive(0.5,9.5,-9.5,20,0);
                                 tfod.deactivate();
                                 break;
                             }
