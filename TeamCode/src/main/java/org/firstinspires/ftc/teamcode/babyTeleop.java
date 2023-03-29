@@ -12,7 +12,7 @@ import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 
-@TeleOp (name= "babyTeleop", group= "Pushbot")
+@TeleOp (name= "teenageTeleop", group= "Pushbot")
 
 public class babyTeleop extends Auto_Util {
 

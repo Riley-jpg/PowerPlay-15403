@@ -16,7 +16,7 @@ public class otherHwMap extends HardwareMapUtil{
     public DcMotor rightbackDrive = null;
     public DcMotor linearActuator = null;
     public DcMotor linearActuator2 = null;
-    public Servo openServo = null;
+    public CRServo openServo = null;
 
 
     public void init(HardwareMap ahwMap) {
@@ -28,8 +28,7 @@ public class otherHwMap extends HardwareMapUtil{
 
         linearActuator = HardwareInitMotor("la1", true);
         linearActuator2 = HardwareInitMotor("la2", true);
-
-        openServo = hwMap.get(Servo.class,"os");
+        openServo = hwMap.get(CRServo.class, "os");
 
 
         leftfrontDrive.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
