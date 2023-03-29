@@ -1,29 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.os.Environment;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.babyHwMap;
 
 import java.util.List;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * This 2022-2023 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -35,9 +20,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Willy_D_test", group = "Autonomous")
+@Autonomous(name = "right_custom_autonomouse", group = "Autonomous")
 
-public class Willy_Ds_test_autonomouse extends Auto_Util {
+public class right_custom_autonomouse extends Auto_Util_custom {
 
     /*
      * Specify the source for the Tensor Flow Model.
@@ -46,8 +31,8 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    //private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
+    //private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+    private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/custom_model_15403_pp.tflite";
 
 
     private static final String[] LABELS = {
@@ -104,7 +89,7 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(2.5, 9.0/9.0);
         }
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
@@ -136,30 +121,31 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
                             objectDetected = recognition.getLabel();
 
                             encoderDrive(0.1,4,4,20,0);
-                            encoderStrafe(0.1,13,13,20,0);
+                            encoderStrafe(0.1,-19,-19,20,0);
                             encoderDrive(0.2, 31,31,20,0);
-                            encoderStrafe(0.1,-7.75,-7.75,20,0);
+                            encoderStrafe(0.2,6.25,6.25,20,0);
                             encoderLift(0.75,75,20,0);
-                            encoderDrive(0.08,2,2,20,0);
+                            encoderDrive(0.08,2.5,2.5,20,0);
                             encoderLift(0.5,-5,20,0);
                             intakeServo.setPower(1);
                             sleep(1500);
                             intakeServo.setPower(0);
                             encoderLift(0.75,5,20,0);
-                            encoderDrive(0.2,-4,-4,20,0);
+                            encoderDrive(0.2,-4.5,-4.5,20,0);
                             encoderLift(1,-50,20,0);
                             if(objectDetected == "1 Bolt"){
-                                encoderStrafe(0.2, -24, -24, 300, 0);
+                                encoderStrafe(0.2, -9, -9, 300, 0);
                                 tfod.deactivate();
                                 break;
                             }
                             else if (objectDetected == "2 Bulb"){
-                                encoderStrafe(0.2,-8,-8,20,0);
+                                encoderStrafe(0.2,8,8,20,0);
                                 tfod.deactivate();
                                 break;
                             }
                             else if (objectDetected == "3 Panel"){
-                                encoderStrafe(0.2, 9, 9, 300, 0);
+                                encoderStrafe(0.2, 24, 24, 300, 0);
+                                encoderDrive(0.5,9.5,-9.5,20,0);
                                 tfod.deactivate();
                                 break;
                             }
@@ -208,7 +194,7 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        //tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+        //tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }
