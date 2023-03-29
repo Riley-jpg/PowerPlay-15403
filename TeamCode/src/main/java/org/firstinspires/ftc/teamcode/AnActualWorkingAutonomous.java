@@ -44,14 +44,14 @@ public class AnActualWorkingAutonomous extends Auto_Util {
      * has been downloaded to the Robot Controller's SD FLASH memory, it must to be loaded using loadModelFromFile()
      * Here we assume it's an Asset.    Also see method initTfod() below .
      */
-    private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
-    // private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/CustomTeamModel.tflite";
+    //private static final String TFOD_MODEL_ASSET = "PowerPlay.tflite";
+     private static final String TFOD_MODEL_FILE  = "/sdcard/FIRST/tflitemodels/model_unquant.tflite";
 
 
     private static final String[] LABELS = {
-            "1 Bolt",
-            "2 Bulb",
-            "3 Panel"
+            "1-triangle",
+            "2-diamond",
+            "3-circle"
     };
 
     /*
@@ -102,7 +102,7 @@ public class AnActualWorkingAutonomous extends Auto_Util {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(3, 9.0/9.0);
         }
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
@@ -133,18 +133,18 @@ public class AnActualWorkingAutonomous extends Auto_Util {
                             telemetry.addData("- Size (Width/Height)","%.0f / %.0f", width, height);
                             objectDetected = recognition.getLabel();
 
-                            encoderDrive(1, 18,18,10,0);
-                            if(objectDetected == "1 Bolt"){
+                            encoderDrive(0.5, 18,18,10,0);
+                            if(objectDetected == "1-triangle"){
                                 encoderStrafe(1, -17, -17, 10, 0);
                                 tfod.deactivate();
                                 break;
                             }
-                            else if (objectDetected == "2 Bulb"){
+                            else if (objectDetected == "2-diamond"){
                                 tfod.deactivate();
                                 break;
                             }
-                            else if (objectDetected == "3 Panel"){
-                                encoderStrafe(0.5, 17, 17, 10, 0);
+                            else if (objectDetected == "3-circle"){
+                                encoderStrafe(1, 17, 17, 200, 0);
                                 tfod.deactivate();
                                 break;
                             }
@@ -186,14 +186,14 @@ public class AnActualWorkingAutonomous extends Auto_Util {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.7f;
-        tfodParameters.isModelTensorFlow2 = true;
+        tfodParameters.minResultConfidence = 0.5f;
+        tfodParameters.isModelTensorFlow2 = false;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
 
         // Use loadModelFromAsset() if the TF Model is built in as an asset by Android Studio
         // Use loadModelFromFile() if you have downloaded a custom team model to the Robot Controller's FLASH.
-        tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
-        // tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
+        //tfod.loadModelFromAsset(TFOD_MODEL_ASSET, LABELS);
+        tfod.loadModelFromFile(TFOD_MODEL_FILE, LABELS);
     }
 }

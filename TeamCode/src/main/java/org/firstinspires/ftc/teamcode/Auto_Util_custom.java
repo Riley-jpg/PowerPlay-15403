@@ -1,16 +1,7 @@
 package org.firstinspires.ftc.teamcode;
-import android.graphics.Color;
-import static android.graphics.Color.blue;
-import static android.graphics.Color.green;
-import static android.graphics.Color.red;
-
-import static org.firstinspires.ftc.robotcore.external.navigation.VuforiaBase.MM_PER_INCH;
 
 import android.graphics.Bitmap;
-import android.graphics.ImageFormat;
 import android.os.Handler;
-
-import androidx.annotation.NonNull;
 
 import com.qualcomm.hardware.bosch.BNO055IMU;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
@@ -19,48 +10,27 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.RobotLog;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
-import org.firstinspires.ftc.robotcore.external.android.util.Size;
-import org.firstinspires.ftc.robotcore.external.function.Consumer;
-import org.firstinspires.ftc.robotcore.external.function.Continuation;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.Camera;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureRequest;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureSequenceId;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCaptureSession;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraCharacteristics;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraException;
-import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraFrame;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.CameraManager;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
 import org.firstinspires.ftc.robotcore.internal.collections.EvictingBlockingQueue;
-import org.firstinspires.ftc.robotcore.internal.network.CallbackLooper;
-import org.firstinspires.ftc.robotcore.internal.system.ContinuationSynchronizer;
-import org.firstinspires.ftc.robotcore.internal.system.Deadline;
 
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
-import java.util.concurrent.TimeUnit;
 
-@TeleOp(name="Auto_Util", group="abstract")
+@TeleOp(name="Auto_Util_custom", group="abstract")
 @Disabled
-public abstract class Auto_Util extends LinearOpMode {
+public abstract class Auto_Util_custom extends LinearOpMode {
     /*
     ___________________________________________________________________________________________________________________________________
     -

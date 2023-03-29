@@ -1,29 +1,14 @@
 package org.firstinspires.ftc.teamcode;
 
-import android.os.Environment;
-
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.util.ElapsedTime;
-import com.qualcomm.robotcore.util.Range;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
 import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
-import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
-import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
 import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
-import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.robotcore.external.tfod.Recognition;
 import org.firstinspires.ftc.robotcore.external.tfod.TFObjectDetector;
-import org.firstinspires.ftc.teamcode.babyHwMap;
 
 import java.util.List;
-
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 /**
  * This 2022-2023 OpMode illustrates the basics of using the TensorFlow Object Detection API to
@@ -35,9 +20,9 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
  * IMPORTANT: In order to use this OpMode, you need to obtain your own Vuforia license key as
  * is explained below.
  */
-@Autonomous(name = "Willy_D_test", group = "Autonomous")
+@Autonomous(name = "left_stock_autonomous", group = "Autonomous")
 
-public class Willy_Ds_test_autonomouse extends Auto_Util {
+public class left_stock_autonomouse extends Auto_Util {
 
     /*
      * Specify the source for the Tensor Flow Model.
@@ -104,7 +89,7 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
             // to artificially zoom in to the center of image.  For best results, the "aspectRatio" argument
             // should be set to the value of the images used to create the TensorFlow Object Detection model
             // (typically 16/9).
-            tfod.setZoom(1.5, 16.0/9.0);
+            tfod.setZoom(2.5, 9.0/9.0);
         }
         /** Wait for the game to begin */
         telemetry.addData(">", "Press Play to start op mode");
@@ -136,9 +121,9 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
                             objectDetected = recognition.getLabel();
 
                             encoderDrive(0.1,4,4,20,0);
-                            encoderStrafe(0.1,13,13,20,0);
+                            encoderStrafe(0.1,12,12,20,0);
                             encoderDrive(0.2, 31,31,20,0);
-                            encoderStrafe(0.1,-7.75,-7.75,20,0);
+                            encoderStrafe(0.1,-6.65,-6.65,20,0);
                             encoderLift(0.75,75,20,0);
                             encoderDrive(0.08,2,2,20,0);
                             encoderLift(0.5,-5,20,0);
@@ -146,10 +131,12 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
                             sleep(1500);
                             intakeServo.setPower(0);
                             encoderLift(0.75,5,20,0);
-                            encoderDrive(0.2,-4,-4,20,0);
+                            encoderDrive(0.2,-3,-3,20,0);
                             encoderLift(1,-50,20,0);
                             if(objectDetected == "1 Bolt"){
-                                encoderStrafe(0.2, -24, -24, 300, 0);
+                                encoderStrafe(0.4, -24, -24, 300, 0);
+                                encoderDrive(0.5,-9.5,9.5,20,0);
+                                encoderStrafe(0.5,4,4,20,0);
                                 tfod.deactivate();
                                 break;
                             }
@@ -201,7 +188,7 @@ public class Willy_Ds_test_autonomouse extends Auto_Util {
         int tfodMonitorViewId = hardwareMap.appContext.getResources().getIdentifier(
                 "tfodMonitorViewId", "id", hardwareMap.appContext.getPackageName());
         TFObjectDetector.Parameters tfodParameters = new TFObjectDetector.Parameters(tfodMonitorViewId);
-        tfodParameters.minResultConfidence = 0.7f;
+        tfodParameters.minResultConfidence = 0.6f;
         tfodParameters.isModelTensorFlow2 = true;
         tfodParameters.inputSize = 300;
         tfod = ClassFactory.getInstance().createTFObjectDetector(tfodParameters, vuforia);
